@@ -579,13 +579,13 @@
       return k * k * (3 - 2 * k);
     };
 
-    // Câmera: horizonte logo abaixo do "V" do M; a pista faz uma curva suave até lá
-    const HORIZON = 214;
+    // Câmera: o horizonte fica atrás da colina; a pista sobe e some no topo, logo abaixo do "V" do M
+    const HORIZON = 198;
     const VANISH_X = 948;
     const NEAR = 1.14; // u além da borda inferior: a estrada nunca "termina" embaixo
-    const yAt = (u) => HORIZON + 60 * u;
+    const yAt = (u) => HORIZON + 76 * u;
     const half = (u) => 62 * u;
-    const center = (u) => VANISH_X + u * (-6 - 50 * (1 - u));
+    const center = (u) => VANISH_X + u * (4 - 50 * (1 - u));
     // ponto na pista: k = 0 borda esquerda, 1 borda direita (fora disso = acostamento)
     const at = (u, k) => [center(u) - half(u) + 2 * half(u) * k, yAt(u)];
     const poly = (pts) => "M" + pts.map((p) => `${fmt(p[0])},${fmt(p[1])}`).join("L") + "Z";
@@ -685,9 +685,9 @@
       const u = 1 / car.z;
       [0.14, 0.36].forEach((k, i) => {
         const [x, y] = at(u, k);
-        const r = half(u) * 0.045;
-        cores[i].setAttribute("cx", fmt(x)); cores[i].setAttribute("cy", fmt(y - r)); cores[i].setAttribute("r", fmt(r));
-        glows[i].setAttribute("cx", fmt(x)); glows[i].setAttribute("cy", fmt(y - r)); glows[i].setAttribute("r", fmt(r * 5));
+        const r = half(u) * 0.034;
+        cores[i].setAttribute("cx", fmt(x)); cores[i].setAttribute("cy", fmt(y - r * 1.4)); cores[i].setAttribute("r", fmt(r));
+        glows[i].setAttribute("cx", fmt(x)); glows[i].setAttribute("cy", fmt(y - r * 1.4)); glows[i].setAttribute("r", fmt(r * 4.2));
       });
       const up = 1 / Math.max(0.5, car.z - 1.1);
       const [px, py] = at(up, 0.25);
@@ -708,13 +708,13 @@
     const mark = $(".cr-m", svg);
     const road = $(".cr-road", svg);
     const sheen = $(".cr-m-sheen", svg);
-    gsap.set(mark, { opacity: 0, y: 10 });
+    gsap.set(mark, { opacity: 0, y: 18 }); // o M surge de trás da colina
 
     const loops = [
       // 7,2 = múltiplo comum dos espaçamentos (faixas e balizadores): o loop não "pula"
       gsap.to(travel, { s: 7.2, duration: 4, ease: "none", repeat: -1, paused: true, onUpdate: () => drawTraffic(travel.s) }),
       gsap.timeline({ repeat: -1, repeatDelay: 2.6, paused: true })
-        .fromTo(car, { z: 30 }, { z: 0.7, duration: 3.4, ease: "none", onUpdate: drawCar }),
+        .fromTo(car, { z: 11 }, { z: 0.7, duration: 2.9, ease: "none", onUpdate: drawCar }),
       gsap.fromTo(sheen, { x: 0 }, { x: 175, duration: 2.4, ease: "power2.inOut", repeat: -1, repeatDelay: 4.5, paused: true }),
     ];
 
@@ -730,7 +730,7 @@
     });
     visible = viewport.isActive;
 
-    // Entrada: o M surge e a estrada é construída do primeiro plano até o horizonte
+    // Entrada: o M surge de trás da colina e a estrada é construída até o topo
     const build = { u: NEAR };
     gsap.timeline({ scrollTrigger: { trigger: ".cta", start: "top 70%", once: true } })
       .set(road, { opacity: 1 })

@@ -503,7 +503,7 @@
     <!-- ================= Chamada final ================= -->
     <section class="cta" id="contato" aria-labelledby="cta-title">
       <div class="cta-bg" aria-hidden="true">
-        <!-- Cena: o M da logo (com volume) no fim de uma estrada real em perspectiva -->
+        <!-- Cena: o M da logo (com volume) atrás de uma colina, no fim de uma estrada real -->
         <svg class="cta-symbol cta-road" viewBox="864 142 150 126" focusable="false">
           <defs>
             <path id="crMPath" d="M999.482,156.226L982.269,165.411L945.321,201.030L909.870,165.956L893.787,159.523L893.787,232.086L906.766,224.412L906.766,182.134L936.384,210.807L944.286,207.211L964.525,201.115L986.266,179.356L986.266,241.069L999.482,248.010Z"/>
@@ -523,13 +523,39 @@
             <radialGradient id="crAura"><stop offset="0" stop-color="#8FA6C4" stop-opacity=".4"/><stop offset="1" stop-color="#8FA6C4" stop-opacity="0"/></radialGradient>
             <radialGradient id="crGlow"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".3" stop-color="#EEF3FF" stop-opacity=".45"/><stop offset="1" stop-color="#EEF3FF" stop-opacity="0"/></radialGradient>
             <radialGradient id="crPool"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".3"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+            <path id="crHillPath" d="M820,238 C828.33,236.58 855.53,232.07 870,229.5 C884.47,226.93 897.63,225.02 906.8,222.6 C915.97,220.18 920.07,217.23 925,215 C929.93,212.77 933.18,210.77 936.4,209.2 C939.62,207.63 941.20,206.73 944.3,205.6 C947.40,204.47 951.63,203.40 955,202.4 C958.37,201.40 961.67,200.10 964.5,199.6 C967.33,199.10 969.42,198.87 972,199.4 C974.58,199.93 977.00,201.12 980,202.8 C983.00,204.48 986.67,207.30 990,209.5 C993.33,211.70 991.67,213.08 1000,216 C1008.33,218.92 1033.33,225.17 1040,227 L1040,300 L800,300 Z"/>
+            <clipPath id="crHillClip"><use href="#crHillPath"/></clipPath>
+            <linearGradient id="crHill" gradientUnits="userSpaceOnUse" x1="0" y1="199" x2="0" y2="268">
+              <stop offset="0" stop-color="#1A2A40"/><stop offset=".35" stop-color="#111D2F"/><stop offset="1" stop-color="#0B1524"/>
+            </linearGradient>
+            <linearGradient id="crFade" gradientUnits="userSpaceOnUse" x1="848" y1="0" x2="887" y2="0">
+              <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="1"/>
+            </linearGradient>
+            <mask id="crGroundFade" maskUnits="userSpaceOnUse" x="780" y="150" width="300" height="160"><rect x="780" y="150" width="300" height="160" fill="url(#crFade)"/></mask>
             <filter id="crBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.8"/></filter>
           </defs>
 
           <ellipse class="cr-aura" cx="946" cy="204" rx="74" ry="54" fill="url(#crAura)"/>
 
-          <!-- Estrada (geometria gerada no JS a partir de uma câmera em perspectiva) -->
-          <g class="cr-road">
+          <!-- M com volume: sombra, camadas de profundidade, face metálica, reflexo e borda -->
+          <g class="cr-m">
+            <use href="#crMPath" fill="#000" opacity=".5" filter="url(#crBlur)" transform="translate(2.6 4)"/>
+            <use href="#crMPath" fill="#4B4E55" transform="translate(1.8 2.4)"/>
+            <use href="#crMPath" fill="#6C6F76" transform="translate(1.2 1.6)"/>
+            <use href="#crMPath" fill="#8E9197" transform="translate(.6 .8)"/>
+            <use href="#crMPath" fill="url(#crMFace)"/>
+            <g clip-path="url(#crMClip)"><polygon class="cr-m-sheen" points="880,150 898,150 862,262 844,262" fill="url(#crSheen)"/></g>
+            <use href="#crMPath" fill="none" stroke="#FFFFFF" stroke-opacity=".6" stroke-width=".35" stroke-linejoin="round"/>
+          </g>
+
+          <!-- Colina na frente do M: a base do M e a estrada somem atrás do topo -->
+          <g class="cr-ground" mask="url(#crGroundFade)">
+            <use href="#crHillPath" fill="url(#crHill)"/>
+            <path d="M820,238 C828.33,236.58 855.53,232.07 870,229.5 C884.47,226.93 897.63,225.02 906.8,222.6 C915.97,220.18 920.07,217.23 925,215 C929.93,212.77 933.18,210.77 936.4,209.2 C939.62,207.63 941.20,206.73 944.3,205.6 C947.40,204.47 951.63,203.40 955,202.4 C958.37,201.40 961.67,200.10 964.5,199.6 C967.33,199.10 969.42,198.87 972,199.4 C974.58,199.93 977.00,201.12 980,202.8 C983.00,204.48 986.67,207.30 990,209.5 C993.33,211.70 991.67,213.08 1000,216 C1008.33,218.92 1033.33,225.17 1040,227" fill="none" stroke="#C9D2DE" stroke-opacity=".35" stroke-width=".45"/>
+          </g>
+
+          <!-- Estrada sobre a colina (geometria gerada no JS a partir de uma câmera em perspectiva) -->
+          <g class="cr-road" clip-path="url(#crHillClip)" mask="url(#crGroundFade)">
             <path class="cr-shoulder cr-shoulder--l" fill="url(#crShoulder)"/>
             <path class="cr-shoulder cr-shoulder--r" fill="url(#crShoulder)"/>
             <path class="cr-asphalt" fill="url(#crAsphalt)"/>
@@ -542,18 +568,8 @@
             <ellipse class="cr-beam" fill="url(#crPool)"/>
             <g class="cr-lights"></g>
           </g>
-          <ellipse class="cr-haze" cx="948" cy="214" rx="26" ry="3" fill="url(#crGlow)" opacity=".45"/>
+          <ellipse class="cr-haze" cx="943.5" cy="205.4" rx="16" ry="2.6" fill="url(#crGlow)" opacity=".45"/>
 
-          <!-- M com volume: sombra, camadas de profundidade, face metálica, reflexo e borda -->
-          <g class="cr-m">
-            <use href="#crMPath" fill="#000" opacity=".5" filter="url(#crBlur)" transform="translate(2.6 4)"/>
-            <use href="#crMPath" fill="#4B4E55" transform="translate(1.8 2.4)"/>
-            <use href="#crMPath" fill="#6C6F76" transform="translate(1.2 1.6)"/>
-            <use href="#crMPath" fill="#8E9197" transform="translate(.6 .8)"/>
-            <use href="#crMPath" fill="url(#crMFace)"/>
-            <g clip-path="url(#crMClip)"><polygon class="cr-m-sheen" points="880,150 898,150 862,262 844,262" fill="url(#crSheen)"/></g>
-            <use href="#crMPath" fill="none" stroke="#FFFFFF" stroke-opacity=".6" stroke-width=".35" stroke-linejoin="round"/>
-          </g>
         </svg>
         <div class="noise"></div>
       </div>
