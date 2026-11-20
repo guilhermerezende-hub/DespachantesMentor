@@ -449,9 +449,9 @@
         return { x: r.left - rb.left + r.width / 2, y: r.top - rb.top + r.height / 2 };
       });
       const cx = pts[0].x;
-      // desktop: estrada em curvas; tablet: ondulação leve; celular: linha reta
-      const isPhone = window.matchMedia("(max-width: 639.98px)").matches;
-      const amp = isDesktop() ? Math.min(96, w * 0.08) : isPhone ? 0 : 6;
+      // Celulares e tablets (em pé ou deitados): estrada reta. Desktop com mouse: estrada em curvas.
+      const touch = window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+      const amp = isDesktop() && !touch ? Math.min(96, w * 0.08) : 0;
 
       const way = [{ x: cx, y: 0 }];
       pts.forEach((p, i) => {
