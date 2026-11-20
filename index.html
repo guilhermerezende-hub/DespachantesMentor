@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Despachantes Mentor | Despachante de veículos — Serviços Detran MG</title>
+  <meta name="description" content="Transferência, 2ª via de CRV/CRLV, emplacamento, cadastro de motor, laudos e vistorias. A Despachantes Mentor executa todos os serviços relacionados ao Detran MG para você. Agilidade, confiança e resultados.">
+  <meta name="theme-color" content="#0B1524">
+
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+
+  <!-- Open Graph: após publicar, troque os caminhos por URLs absolutas (https://seudominio.com.br/...) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Despachantes Mentor">
+  <meta property="og:title" content="Despachantes Mentor — Todos os serviços do Detran MG">
+  <meta property="og:description" content="Transferência, 2ª via de CRV/CRLV, emplacamento, cadastro de motor, laudos e vistorias. Agilidade, confiança e resultados.">
+  <meta property="og:image" content="assets/img/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=Saira:wdth,wght@100..125,400..800&display=swap">
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <script>
+    /* Ativa os estados iniciais das animações (sem "piscar" o conteúdo).
+       Se o JS não carregar em até 3s, o conteúdo aparece normalmente. */
+    (function (d) {
+      var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (!reduce) d.documentElement.classList.add("anim");
+      window.setTimeout(function () { if (!window.__mentorReady) d.documentElement.classList.remove("anim"); }, 3000);
+    })(document);
+  </script>
+
+  <!-- GSAP 3.15 (cópia local de GSAP/node_modules/gsap/dist) -->
+  <script defer src="assets/vendor/gsap/gsap.min.js"></script>
+  <script defer src="assets/vendor/gsap/ScrollTrigger.min.js"></script>
+  <script defer src="assets/vendor/gsap/ScrollToPlugin.min.js"></script>
+  <script defer src="assets/vendor/gsap/SplitText.min.js"></script>
+  <script defer src="assets/vendor/gsap/DrawSVGPlugin.min.js"></script>
+  <script defer src="assets/vendor/gsap/MotionPathPlugin.min.js"></script>
+  <script defer src="assets/vendor/gsap/ScrambleTextPlugin.min.js"></script>
+  <script defer src="assets/js/main.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Despachantes Mentor",
+    "slogan": "Agilidade • Confiança • Resultados",
+    "description": "Despachante de veículos. Executamos todos os serviços relacionados ao Detran MG.",
+    "telephone": "+55 31 99966-0016",
+    "areaServed": { "@type": "State", "name": "Minas Gerais" },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Serviços Detran MG",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Transferência de propriedade" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "2ª via de CRV / CRLV" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Emplacamentos" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Cadastro de motor" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Laudos" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Vistorias" } }
+      ]
+    }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <!-- ================= Sprite: logo e ícones ================= -->
+  <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="mt-gM" gradientUnits="userSpaceOnUse" x1="894" y1="156" x2="1000" y2="248">
+        <stop offset="0" stop-color="#DCDCDC"/><stop offset="1" stop-color="#C3C3C3"/>
+      </linearGradient>
+      <linearGradient id="mt-gCurb" gradientUnits="userSpaceOnUse" x1="932.77" y1="221.06" x2="934.73" y2="229.92">
+        <stop offset="0" stop-color="#E2E2E2"/><stop offset="1" stop-color="#CACACA"/>
+      </linearGradient>
+      <linearGradient id="mt-gRoad" gradientUnits="userSpaceOnUse" x1="915" y1="240" x2="975" y2="240">
+        <stop offset="0" stop-color="#5E5E5E"/><stop offset="1" stop-color="#575757"/>
+      </linearGradient>
+      <clipPath id="mt-clipRoad"><path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000C950.882,225.400 952.946,243.585 975.084,259.600Z"/></clipPath>
+      <clipPath id="mt-clipCurb"><path d="M882.200,259.600C909.070,229.650 944.278,211.164 979.800,207.000C944.484,219.151 925.611,231.746 912.823,259.600Z"/></clipPath>
+    </defs>
+
+    <!-- Símbolo: M + estrada -->
+    <symbol id="sym-mentor" viewBox="876 150 130 116">
+      <path d="M999.482,156.226L982.269,165.411L945.321,201.030L909.870,165.956L893.787,159.523L893.787,232.086L906.766,224.412L906.766,182.134L936.384,210.807L944.286,207.211L964.525,201.115L986.266,179.356L986.266,241.069L999.482,248.010Z" fill="url(#mt-gM)"/>
+      <path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000C950.882,225.400 952.946,243.585 975.084,259.600Z" fill="url(#mt-gRoad)"/>
+      <g clip-path="url(#mt-clipRoad)" fill="none" stroke-linecap="round">
+        <path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000" stroke="#474747" stroke-width="3" stroke-opacity=".8"/>
+        <path d="M975.084,259.600C952.946,243.585 950.882,225.400 979.800,207.000" stroke="#454545" stroke-width="1.6"/>
+        <path d="M929.131,262.904L933.346,251.578L930.797,250.420L926.379,261.990ZM935.732,246.682L941.219,237.571L939.134,236.102L933.305,245.389ZM944.881,232.709L952.061,224.865L950.486,223.189L942.947,231.126ZM954.572,222.470L959.783,218.230L958.672,216.689L953.201,220.879ZM962.681,216.062L965.831,214.004L965.127,212.794L961.808,214.721Z" fill="#ECECEC" stroke="none"/>
+      </g>
+      <path d="M882.200,259.600C909.070,229.650 944.278,211.164 979.800,207.000C944.484,219.151 925.611,231.746 912.823,259.600Z" fill="url(#mt-gCurb)"/>
+      <g clip-path="url(#mt-clipCurb)" fill="none" stroke-linecap="round">
+        <path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000" stroke="#A4A4A4" stroke-width="4.2" stroke-opacity=".45"/>
+        <path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000" stroke="#9A9A9A" stroke-width="2" stroke-opacity=".7"/>
+      </g>
+    </symbol>
+
+    <!-- Logo horizontal: símbolo + DESPACHANTES —MENTOR— -->
+    <symbol id="logo-lockup" viewBox="0 0 326 60">
+      <use href="#sym-mentor" x="0" y="0" width="67.24" height="60"/>
+      <g transform="translate(78 6.6) translate(-821.65 -277.24)" fill="#D0D0D0">
+        <path d="M821.650 295.450V277.450H828.219Q830.829 277.450 832.494 277.655Q834.159 277.859 835.122 278.400Q836.085 278.940 836.528 279.951Q836.971 280.963 837.091 282.550Q837.210 284.138 837.210 286.450Q837.210 288.762 837.091 290.350Q836.971 291.937 836.528 292.949Q836.085 293.960 835.122 294.500Q834.159 295.041 832.494 295.245Q830.829 295.450 828.219 295.450ZM824.131 293.367H827.694Q829.729 293.367 831.054 293.306Q832.379 293.245 833.135 292.926Q833.891 292.607 834.240 291.878Q834.590 291.149 834.677 289.839Q834.764 288.528 834.764 286.450Q834.764 284.372 834.664 283.061Q834.564 281.751 834.210 281.022Q833.856 280.293 833.086 279.974Q832.316 279.655 831.011 279.594Q829.706 279.533 827.697 279.533H824.131Z M843.784 295.450V277.450H857.478V279.533H846.265V285.330H855.996V287.413H846.265V293.367H857.478V295.450Z M870.589 295.659Q869.447 295.659 868.109 295.611Q866.770 295.564 865.476 295.476Q864.181 295.389 863.127 295.276V293.237Q864.242 293.332 865.485 293.411Q866.728 293.489 867.898 293.533Q869.067 293.577 869.887 293.577Q871.439 293.577 872.354 293.499Q873.270 293.420 873.900 293.159Q874.416 292.932 874.653 292.529Q874.890 292.126 874.965 291.579Q875.040 291.032 875.040 290.437Q875.040 289.623 874.978 289.107Q874.917 288.591 874.685 288.311Q874.453 288.031 873.940 287.891Q873.427 287.751 872.533 287.672L867.237 287.158Q865.685 287.010 864.740 286.687Q863.794 286.364 863.320 285.793Q862.846 285.221 862.681 284.363Q862.516 283.505 862.516 282.305Q862.516 280.518 863.039 279.494Q863.561 278.470 864.537 277.986Q865.513 277.502 866.882 277.372Q868.251 277.241 869.936 277.241Q871.113 277.241 872.337 277.297Q873.562 277.354 874.656 277.458Q875.750 277.563 876.482 277.685V279.672Q875.671 279.550 874.602 279.476Q873.534 279.402 872.404 279.362Q871.275 279.323 870.281 279.323Q868.658 279.323 867.654 279.419Q866.650 279.515 866.038 279.804Q865.348 280.119 865.181 280.740Q865.014 281.361 865.014 282.219Q865.014 283.180 865.150 283.714Q865.285 284.247 865.827 284.488Q866.369 284.728 867.548 284.842L872.868 285.338Q873.917 285.426 874.747 285.600Q875.577 285.774 876.162 286.149Q876.746 286.525 877.060 287.293Q877.243 287.677 877.342 288.138Q877.442 288.600 877.490 289.140Q877.537 289.680 877.537 290.341Q877.537 291.964 877.167 292.984Q876.796 294.004 876.138 294.562Q875.479 295.120 874.603 295.355Q873.727 295.590 872.702 295.625Q871.678 295.659 870.589 295.659Z M883.866 295.450V277.450H893.090Q895.035 277.450 896.212 277.877Q897.389 278.305 897.994 279.072Q898.599 279.840 898.808 280.886Q899.016 281.931 899.016 283.160Q899.016 284.310 898.812 285.343Q898.608 286.376 898.002 287.169Q897.397 287.962 896.212 288.407Q895.026 288.852 893.039 288.852H886.346V295.450ZM886.346 286.769H892.225Q893.752 286.769 894.625 286.559Q895.497 286.349 895.912 285.916Q896.326 285.483 896.448 284.801Q896.570 284.120 896.570 283.160Q896.570 282.200 896.466 281.509Q896.361 280.819 895.947 280.386Q895.532 279.953 894.677 279.743Q893.822 279.533 892.295 279.533H886.346Z M902.737 295.450 910.801 277.450H913.791L921.838 295.450H919.149L916.980 290.558H907.465L905.262 295.450ZM908.350 288.475H916.095L912.370 279.751H912.136Z M934.619 295.659Q932.431 295.659 930.931 295.442Q929.432 295.224 928.486 294.658Q927.540 294.092 927.034 293.059Q926.529 292.025 926.345 290.403Q926.162 288.780 926.162 286.450Q926.162 284.120 926.345 282.498Q926.529 280.875 927.034 279.842Q927.540 278.809 928.477 278.247Q929.414 277.685 930.923 277.463Q932.431 277.241 934.619 277.241Q935.464 277.241 936.379 277.289Q937.295 277.336 938.145 277.428Q938.994 277.519 939.631 277.641V279.602Q938.934 279.506 938.149 279.450Q937.364 279.393 936.631 279.358Q935.898 279.323 935.313 279.323Q933.480 279.323 932.262 279.437Q931.044 279.550 930.315 279.921Q929.586 280.293 929.228 281.066Q928.870 281.838 928.756 283.144Q928.643 284.450 928.643 286.450Q928.643 288.450 928.756 289.756Q928.870 291.062 929.228 291.834Q929.586 292.607 930.315 292.979Q931.044 293.350 932.262 293.463Q933.480 293.577 935.313 293.577Q936.386 293.577 937.615 293.498Q938.845 293.420 939.761 293.298V295.329Q939.082 295.424 938.188 295.494Q937.295 295.564 936.366 295.611Q935.438 295.659 934.619 295.659Z M945.820 295.450V277.450H948.300V285.313H959.562V277.450H962.008V295.450H959.562V287.447H948.300V295.450Z M967.072 295.450 975.136 277.450H978.126L986.173 295.450H983.484L981.315 290.558H971.800L969.596 295.450ZM972.685 288.475H980.430L976.705 279.751H976.470Z M991.239 295.450V277.450H993.770L1004.954 291.425H1005.059V277.450H1007.410V295.450H1005.068L993.694 281.216H993.589V295.450Z M1019.262 295.450V279.584H1012.569V277.450H1028.427V279.584H1021.725V295.450Z M1033.596 295.450V277.450H1047.290V279.533H1036.077V285.330H1045.809V287.413H1036.077V293.367H1047.290V295.450Z M1060.402 295.659Q1059.260 295.659 1057.921 295.611Q1056.583 295.564 1055.288 295.476Q1053.994 295.389 1052.939 295.276V293.237Q1054.055 293.332 1055.298 293.411Q1056.541 293.489 1057.710 293.533Q1058.879 293.577 1059.700 293.577Q1061.251 293.577 1062.167 293.499Q1063.083 293.420 1063.712 293.159Q1064.229 292.932 1064.466 292.529Q1064.703 292.126 1064.777 291.579Q1064.852 291.032 1064.852 290.437Q1064.852 289.623 1064.791 289.107Q1064.730 288.591 1064.498 288.311Q1064.265 288.031 1063.753 287.891Q1063.240 287.751 1062.345 287.672L1057.049 287.158Q1055.497 287.010 1054.552 286.687Q1053.607 286.364 1053.133 285.793Q1052.659 285.221 1052.494 284.363Q1052.329 283.505 1052.329 282.305Q1052.329 280.518 1052.851 279.494Q1053.374 278.470 1054.350 277.986Q1055.326 277.502 1056.695 277.372Q1058.064 277.241 1059.748 277.241Q1060.925 277.241 1062.150 277.297Q1063.375 277.354 1064.469 277.458Q1065.563 277.563 1066.295 277.685V279.672Q1065.483 279.550 1064.415 279.476Q1063.346 279.402 1062.217 279.362Q1061.088 279.323 1060.094 279.323Q1058.470 279.323 1057.466 279.419Q1056.462 279.515 1055.850 279.804Q1055.160 280.119 1054.993 280.740Q1054.827 281.361 1054.827 282.219Q1054.827 283.180 1054.962 283.714Q1055.098 284.247 1055.640 284.488Q1056.181 284.728 1057.360 284.842L1062.680 285.338Q1063.730 285.426 1064.560 285.600Q1065.390 285.774 1065.974 286.149Q1066.559 286.525 1066.872 287.293Q1067.055 287.677 1067.155 288.138Q1067.255 288.600 1067.302 289.140Q1067.350 289.680 1067.350 290.341Q1067.350 291.964 1066.979 292.984Q1066.609 294.004 1065.950 294.562Q1065.292 295.120 1064.415 295.355Q1063.539 295.590 1062.515 295.625Q1061.491 295.659 1060.402 295.659Z"/>
+        <path d="M859.650 323.750V305.900H862.723L871.107 320.705H871.267L879.607 305.900H882.708V323.750H880.347V309.262H880.249L872.075 323.750H870.190L862.050 309.262H861.936V323.750Z M896.664 323.750V305.900H911.458V307.755H899.072V313.815H909.848V315.670H899.072V321.895H911.458V323.750Z M923.889 323.750V305.900H926.322L938.991 320.182H939.106V305.900H941.392V323.750H939.129L926.290 309.257H926.175V323.750Z M960.396 323.750V307.797H953.008V305.900H970.189V307.797H962.788V323.750Z M990.347 323.958Q987.689 323.958 985.959 323.747Q984.228 323.536 983.227 322.980Q982.226 322.425 981.746 321.399Q981.266 320.373 981.137 318.761Q981.009 317.149 981.009 314.825Q981.009 312.501 981.137 310.889Q981.266 309.277 981.746 308.251Q982.226 307.225 983.227 306.670Q984.228 306.114 985.962 305.903Q987.696 305.692 990.351 305.692Q993.005 305.692 994.739 305.903Q996.473 306.114 997.466 306.670Q998.460 307.225 998.932 308.251Q999.404 309.277 999.533 310.889Q999.661 312.501 999.661 314.825Q999.661 317.149 999.533 318.761Q999.404 320.373 998.932 321.399Q998.460 322.425 997.468 322.980Q996.476 323.536 994.740 323.747Q993.005 323.958 990.347 323.958ZM990.351 322.103Q992.318 322.103 993.585 322.018Q994.852 321.933 995.597 321.584Q996.342 321.236 996.700 320.460Q997.059 319.684 997.156 318.325Q997.254 316.965 997.254 314.825Q997.254 312.685 997.156 311.325Q997.059 309.966 996.700 309.190Q996.342 308.414 995.597 308.066Q994.852 307.717 993.582 307.632Q992.313 307.547 990.343 307.547Q988.388 307.547 987.119 307.632Q985.849 307.717 985.096 308.064Q984.344 308.411 983.985 309.188Q983.627 309.966 983.522 311.325Q983.417 312.685 983.417 314.825Q983.417 316.965 983.522 318.325Q983.627 319.684 983.985 320.462Q984.344 321.239 985.096 321.586Q985.849 321.933 987.121 322.018Q988.392 322.103 990.351 322.103Z M1012.785 323.750V305.900H1023.241Q1025.288 305.900 1026.523 306.313Q1027.759 306.726 1028.382 307.458Q1029.004 308.190 1029.210 309.155Q1029.416 310.119 1029.416 311.223Q1029.416 312.412 1029.146 313.425Q1028.876 314.437 1028.138 315.174Q1027.399 315.911 1025.954 316.307L1029.680 323.750H1027.099L1023.238 315.905L1024.554 316.319Q1024.110 316.578 1023.634 316.625Q1023.158 316.672 1022.688 316.672H1015.193V323.750ZM1015.193 314.817H1022.168Q1023.873 314.817 1024.859 314.592Q1025.845 314.366 1026.307 313.915Q1026.769 313.464 1026.904 312.790Q1027.039 312.117 1027.039 311.223Q1027.039 310.357 1026.925 309.711Q1026.811 309.066 1026.375 308.629Q1025.939 308.192 1025.027 307.974Q1024.115 307.755 1022.504 307.755H1015.193Z"/>
+        <path d="M821.65,313.575H849.55V315.125H821.65ZM1039.65,313.575H1067.65V315.125H1039.65Z"/>
+      </g>
+    </symbol>
+
+    <!-- Ícones (traço 2px, estilo linha) -->
+    <symbol id="i-whatsapp" viewBox="0 0 24 24"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></g></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></g></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="m7.8 12.3 2.8 2.8 5.6-5.8"/></g></symbol>
+  </svg>
+
+  <!-- ================= Cabeçalho ================= -->
+  <header class="site-header" data-header>
+    <div class="container header-inner">
+      <a class="brand" href="#inicio" aria-label="Despachantes Mentor — voltar ao início">
+        <svg class="brand-logo" viewBox="0 0 326 60" aria-hidden="true" focusable="false"><use href="#logo-lockup"/></svg>
+      </a>
+
+      <nav class="main-nav" aria-label="Navegação principal">
+        <ul>
+          <li><a href="#servicos">Serviços</a></li>
+          <li><a href="#como-funciona">Como funciona</a></li>
+          <li><a href="#por-que">Por que a Mentor</a></li>
+          <li><a href="#duvidas">Dúvidas</a></li>
+        </ul>
+      </nav>
+
+      <a class="btn btn-metal btn-sm header-cta" data-wa="" href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+        <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>
+        <span>(31) 99966-0016</span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="menu-mobile" aria-label="Abrir menu" data-menu-toggle>
+        <span class="menu-toggle-bars" aria-hidden="true"><i></i><i></i></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu" id="menu-mobile" data-menu hidden>
+    <nav aria-label="Menu">
+      <a class="mm-link" href="#servicos"><span class="mm-num">01</span>Serviços</a>
+      <a class="mm-link" href="#como-funciona"><span class="mm-num">02</span>Como funciona</a>
+      <a class="mm-link" href="#por-que"><span class="mm-num">03</span>Por que a Mentor</a>
+      <a class="mm-link" href="#duvidas"><span class="mm-num">04</span>Dúvidas</a>
+    </nav>
+    <div class="mm-footer">
+      <a class="btn btn-metal btn-lg mm-cta" data-wa="" href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+        <svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Falar no WhatsApp
+      </a>
+      <p class="mm-tagline mm-cta">Agilidade · Confiança · Resultados</p>
+    </div>
+  </div>
+
+  <main id="conteudo">
+    <!-- ================= Hero ================= -->
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero-bg" aria-hidden="true">
+        <div class="hero-glow"></div>
+        <div class="hero-grid"></div>
+        <svg class="hero-sweep" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <path class="sweep-line" d="M-80 980 C 320 700, 760 560, 1520 470" vector-effect="non-scaling-stroke"/>
+          <path class="sweep-line sweep-line--soft" d="M-80 1060 C 380 780, 860 660, 1520 600" vector-effect="non-scaling-stroke"/>
+          <path class="sweep-lane" d="M-80 1020 C 350 740, 810 610, 1520 535" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <div class="noise"></div>
+      </div>
+
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow eyebrow--dark" data-hero-item>Despachante de veículos · Detran MG</p>
+          <h1 class="hero-title" id="hero-title">A burocracia fica com a gente. <span class="text-metal">Você segue em frente.</span></h1>
+          <p class="hero-lead" data-hero-item>
+            Transferência, 2ª via de CRV/CRLV, emplacamento, cadastro de motor, laudos e vistorias:
+            <strong>executamos todos os serviços relacionados ao Detran MG</strong>, do primeiro contato ao documento pronto.
+          </p>
+          <div class="hero-actions" data-hero-item>
+            <a class="btn btn-metal btn-lg" data-wa="" data-magnetic href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Falar no WhatsApp
+            </a>
+            <a class="btn btn-ghost btn-lg" href="#servicos">
+              Conhecer os serviços <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
+          </div>
+          <ul class="hero-trust" data-hero-item>
+            <li><span class="trust-ico"><svg aria-hidden="true"><use href="#i-bolt"/></svg></span><span><strong>Agilidade</strong>Atendimento rápido</span></li>
+            <li><span class="trust-ico"><svg aria-hidden="true"><use href="#i-shield"/></svg></span><span><strong>Confiança</strong>Orientação em cada etapa</span></li>
+            <li><span class="trust-ico"><svg aria-hidden="true"><use href="#i-target"/></svg></span><span><strong>Resultados</strong>Documento pronto</span></li>
+          </ul>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-stage">
+            <div class="stage-core"></div>
+            <div class="stage-ring"></div>
+            <div class="stage-ticks"></div>
+
+            <div class="hero-symbol-wrap">
+              <svg class="hero-symbol" viewBox="876 150 130 116" focusable="false">
+                <mask id="hsRoadMask" maskUnits="userSpaceOnUse" x="860" y="190" width="160" height="90">
+                  <path class="hs-road-mask" d="M928 268 L928 262 C930 240 945 222 986 203" fill="none" stroke="#fff" stroke-width="100"/>
+                </mask>
+                <path class="hs-m-fill" d="M999.482,156.226L982.269,165.411L945.321,201.030L909.870,165.956L893.787,159.523L893.787,232.086L906.766,224.412L906.766,182.134L936.384,210.807L944.286,207.211L964.525,201.115L986.266,179.356L986.266,241.069L999.482,248.010Z" fill="url(#mt-gM)"/>
+                <path class="hs-m-stroke" d="M999.482,156.226L982.269,165.411L945.321,201.030L909.870,165.956L893.787,159.523L893.787,232.086L906.766,224.412L906.766,182.134L936.384,210.807L944.286,207.211L964.525,201.115L986.266,179.356L986.266,241.069L999.482,248.010Z" fill="none" stroke="#EDEDED" stroke-width=".8" stroke-linejoin="round"/>
+                <g class="hs-road" mask="url(#hsRoadMask)">
+                  <path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000C950.882,225.400 952.946,243.585 975.084,259.600Z" fill="url(#mt-gRoad)"/>
+                  <g clip-path="url(#mt-clipRoad)" fill="none" stroke-linecap="round">
+                    <path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000" stroke="#474747" stroke-width="3" stroke-opacity=".8"/>
+                    <path d="M975.084,259.600C952.946,243.585 950.882,225.400 979.800,207.000" stroke="#454545" stroke-width="1.6"/>
+                    <path class="hs-dash" d="M929.131,262.904L933.346,251.578L930.797,250.420L926.379,261.990Z" fill="#ECECEC" stroke="none"/>
+                    <path class="hs-dash" d="M935.732,246.682L941.219,237.571L939.134,236.102L933.305,245.389Z" fill="#ECECEC" stroke="none"/>
+                    <path class="hs-dash" d="M944.881,232.709L952.061,224.865L950.486,223.189L942.947,231.126Z" fill="#ECECEC" stroke="none"/>
+                    <path class="hs-dash" d="M954.572,222.470L959.783,218.230L958.672,216.689L953.201,220.879Z" fill="#ECECEC" stroke="none"/>
+                    <path class="hs-dash" d="M962.681,216.062L965.831,214.004L965.127,212.794L961.808,214.721Z" fill="#ECECEC" stroke="none"/>
+                  </g>
+                  <path d="M882.200,259.600C909.070,229.650 944.278,211.164 979.800,207.000C944.484,219.151 925.611,231.746 912.823,259.600Z" fill="url(#mt-gCurb)"/>
+                  <g clip-path="url(#mt-clipCurb)" fill="none" stroke-linecap="round">
+                    <path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000" stroke="#A4A4A4" stroke-width="4.2" stroke-opacity=".45"/>
+                    <path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000" stroke="#9A9A9A" stroke-width="2" stroke-opacity=".7"/>
+                  </g>
+                </g>
+              </svg>
+            </div>
+
+            <!-- Placa no padrão Mercosul (ilustrativa) -->
+            <div class="float float--plate" data-depth="34">
+              <div class="float-inner float-inner--plate">
+                <div class="plate" data-plate>
+                  <div class="plate-band"><span class="plate-qr"></span><span class="plate-country">BRASIL</span><span class="plate-flag"></span></div>
+                  <div class="plate-code" data-plate-code>MNT0R26</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="float float--chip-a" data-depth="-26">
+              <div class="float-inner float-inner--a">
+                <div class="chip">
+                  <span class="chip-ico"><svg><use href="#i-check-circle"/></svg></span>
+                  <span class="chip-text"><strong>Transferência concluída</strong><small>Detran MG</small></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="float float--chip-b" data-depth="22">
+              <div class="float-inner float-inner--b">
+                <div class="chip">
+                  <span class="chip-ico"><svg><use href="#i-shield"/></svg></span>
+                  <span class="chip-text"><strong>Vistoria aprovada</strong><small>Laudo emitido</small></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Faixa com os serviços -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee-track">
+          <div class="marquee-group">
+            <span>Transferência</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">2ª via CRV / CRLV</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span>Emplacamentos</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">Cadastro de motor</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span>Laudos</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">Vistorias</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span>Transferência</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">2ª via CRV / CRLV</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span>Emplacamentos</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">Cadastro de motor</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span>Laudos</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">Vistorias</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+          </div>
+          <div class="marquee-group">
+            <span>Transferência</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">2ª via CRV / CRLV</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span>Emplacamentos</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">Cadastro de motor</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span>Laudos</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">Vistorias</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span>Transferência</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">2ª via CRV / CRLV</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span>Emplacamentos</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">Cadastro de motor</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span>Laudos</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+            <span class="is-outline">Vistorias</span><svg class="marquee-sep" viewBox="876 150 130 116"><use href="#sym-mentor"/></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Serviços ================= -->
+    <section class="services" id="servicos" aria-labelledby="servicos-title">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow" data-reveal>01 · Serviços</p>
+          <h2 class="section-title" id="servicos-title" data-split>Tudo o que o seu veículo precisa no Detran MG</h2>
+          <p class="section-lead" data-reveal>Executamos todos os serviços relacionados ao Detran MG. Conheça os principais e deixe cada etapa com quem entende do assunto.</p>
+        </header>
+
+        <div class="svc-grid">
+          <!-- Destaque: Transferência -->
+          <article class="svc-card svc-card--featured" data-reveal>
+            <div class="feat-deco" aria-hidden="true">
+              <svg viewBox="876 150 130 116" focusable="false"><use href="#sym-mentor"/></svg>
+            </div>
+            <div class="svc-top">
+              <span class="svc-icon-box">
+                <svg class="svc-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                  <path d="M8 17h28"/><path d="M29 10l7 7-7 7"/><path d="M40 31H12"/><path d="M19 24l-7 7 7 7"/>
+                </svg>
+              </span>
+              <span class="svc-tag">Compra e venda</span>
+              <span class="svc-num" aria-hidden="true">01</span>
+            </div>
+            <h3 class="svc-title">Transferência de propriedade</h3>
+            <p class="svc-text">Comprou ou vendeu um veículo? Cuidamos de toda a transferência junto ao Detran MG para que o documento fique no nome do novo proprietário, dentro do prazo e sem complicação.</p>
+            <ul class="feat-list">
+              <li><svg class="check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Análise e conferência de toda a documentação</li>
+              <li><svg class="check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Orientação sobre vistoria e laudos necessários</li>
+              <li><svg class="check" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Acompanhamento até a emissão do novo documento</li>
+            </ul>
+            <a class="btn btn-metal svc-cta" data-wa="Transferência de propriedade" href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+              Solicitar transferência <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
+          </article>
+
+          <article class="svc-card" data-reveal>
+            <div class="svc-top">
+              <span class="svc-icon-box">
+                <svg class="svc-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                  <path d="M17 13V9.5A2.5 2.5 0 0 1 19.5 7h16A2.5 2.5 0 0 1 38 9.5v21a2.5 2.5 0 0 1-2.5 2.5H33"/>
+                  <rect x="10" y="13" width="23" height="28" rx="2.5"/>
+                  <path d="M15.5 21h12"/><path d="M15.5 26.5h12"/><path d="M15.5 32h7"/>
+                </svg>
+              </span>
+              <span class="svc-num" aria-hidden="true">02</span>
+            </div>
+            <h3 class="svc-title">2ª via de CRV / CRLV</h3>
+            <p class="svc-text">Documento perdido, furtado ou danificado? Providenciamos a segunda via do CRV e do CRLV com agilidade e segurança.</p>
+            <a class="svc-link" data-wa="2ª via de CRV / CRLV" href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+              Solicitar <span class="sr-only">2ª via de CRV / CRLV</span> pelo WhatsApp <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
+          </article>
+
+          <article class="svc-card" data-reveal>
+            <div class="svc-top">
+              <span class="svc-icon-box">
+                <svg class="svc-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                  <rect x="5" y="13" width="38" height="22" rx="3"/>
+                  <path d="M5 19h38"/>
+                  <path d="M11 27.5h3.5"/><path d="M17 27.5h3.5"/><path d="M23 27.5h3.5"/><path d="M29 27.5h3.5"/><path d="M35 27.5h2.5"/>
+                </svg>
+              </span>
+              <span class="svc-num" aria-hidden="true">03</span>
+            </div>
+            <h3 class="svc-title">Emplacamentos</h3>
+            <p class="svc-text">Primeiro emplacamento de veículo 0 km, troca para a placa Mercosul e substituição de placas danificadas ou extraviadas.</p>
+            <a class="svc-link" data-wa="Emplacamento" href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+              Solicitar <span class="sr-only">emplacamento</span> pelo WhatsApp <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
+          </article>
+
+          <article class="svc-card" data-reveal>
+            <div class="svc-top">
+              <span class="svc-icon-box">
+                <svg class="svc-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                  <path d="M19 12h10"/><path d="M24 12v5"/>
+                  <path d="M13 17h19l4 4h3v-3h4v15h-4v-3h-3l-4 6H17l-4-4H9v-6H6v-5h3v-4h4z"/>
+                </svg>
+              </span>
+              <span class="svc-num" aria-hidden="true">04</span>
+            </div>
+            <h3 class="svc-title">Cadastro de motor</h3>
+            <p class="svc-text">Trocou o motor do veículo? Regularizamos o cadastro do novo motor junto ao Detran MG para deixar a documentação em dia.</p>
+            <a class="svc-link" data-wa="Cadastro de motor" href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+              Solicitar <span class="sr-only">cadastro de motor</span> pelo WhatsApp <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
+          </article>
+
+          <article class="svc-card" data-reveal>
+            <div class="svc-top">
+              <span class="svc-icon-box">
+                <svg class="svc-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                  <path d="M18 9h-4.5A2.5 2.5 0 0 0 11 11.5v28a2.5 2.5 0 0 0 2.5 2.5h21a2.5 2.5 0 0 0 2.5-2.5v-28A2.5 2.5 0 0 0 34.5 9H30"/>
+                  <rect x="18" y="6" width="12" height="6" rx="1.5"/>
+                  <path d="M17.5 24.5l4 4 8-8.5"/>
+                  <path d="M17.5 35h13"/>
+                </svg>
+              </span>
+              <span class="svc-num" aria-hidden="true">05</span>
+            </div>
+            <h3 class="svc-title">Laudos</h3>
+            <p class="svc-text">Laudos exigidos pelo Detran MG para transferência, regularização e alteração de características do veículo, com orientação em cada etapa.</p>
+            <a class="svc-link" data-wa="Laudo" href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+              Solicitar <span class="sr-only">laudo</span> pelo WhatsApp <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
+          </article>
+
+          <article class="svc-card" data-reveal>
+            <div class="svc-top">
+              <span class="svc-icon-box">
+                <svg class="svc-icon" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+                  <path d="M6 14V9a3 3 0 0 1 3-3h5"/><path d="M34 6h5a3 3 0 0 1 3 3v5"/><path d="M42 34v5a3 3 0 0 1-3 3h-5"/><path d="M14 42H9a3 3 0 0 1-3-3v-5"/>
+                  <path d="M14.5 26l2.6-6.4A3 3 0 0 1 19.9 17.7h8.2a3 3 0 0 1 2.8 1.9L33.5 26"/>
+                  <rect x="12" y="26" width="24" height="8" rx="2.5"/>
+                  <path d="M15.5 34v3"/><path d="M32.5 34v3"/><path d="M16.5 30h2"/><path d="M29.5 30h2"/>
+                </svg>
+              </span>
+              <span class="svc-num" aria-hidden="true">06</span>
+            </div>
+            <h3 class="svc-title">Vistorias</h3>
+            <p class="svc-text">Vistoria veicular para transferência, mudança de município, alteração de características e demais processos. Orientamos e acompanhamos tudo.</p>
+            <a class="svc-link" data-wa="Vistoria" href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+              Solicitar <span class="sr-only">vistoria</span> pelo WhatsApp <svg aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
+          </article>
+
+          <aside class="svc-more" data-reveal aria-label="Outros serviços">
+            <span class="svc-more-mark" aria-hidden="true"><svg viewBox="876 150 130 116" focusable="false"><use href="#sym-mentor"/></svg></span>
+            <div class="svc-more-copy">
+              <h3>Precisa de outro serviço?</h3>
+              <p>Executamos <strong>todos os serviços relacionados ao Detran MG</strong>. Conte o que você precisa e a gente resolve.</p>
+            </div>
+            <a class="btn btn-metal" data-wa="" href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Falar com a Mentor
+            </a>
+            <span class="svc-more-lane" aria-hidden="true"></span>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Como funciona ================= -->
+    <section class="process" id="como-funciona" aria-labelledby="processo-title">
+      <div class="process-bg" aria-hidden="true"><div class="noise"></div></div>
+      <div class="container">
+        <header class="section-head section-head--center">
+          <p class="eyebrow eyebrow--dark" data-reveal>02 · Como funciona</p>
+          <h2 class="section-title" id="processo-title" data-split>Do primeiro contato ao documento pronto</h2>
+          <p class="section-lead" data-reveal>Um caminho simples, em quatro etapas. Você acompanha, a gente resolve.</p>
+        </header>
+
+        <div class="route" data-route>
+          <svg class="route-svg" aria-hidden="true" focusable="false">
+            <path class="route-path route-edge"/>
+            <path class="route-path route-asphalt"/>
+            <path class="route-path route-lane"/>
+            <path class="route-path route-glow"/>
+            <path class="route-path route-progress"/>
+          </svg>
+
+          <div class="route-car" aria-hidden="true">
+            <span class="car-beam"></span>
+            <svg class="car-svg" viewBox="0 0 64 32" focusable="false">
+              <defs>
+                <linearGradient id="carBody" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#F2F3F5"/><stop offset=".5" stop-color="#CDCFD3"/><stop offset="1" stop-color="#9FA2A8"/>
+                </linearGradient>
+              </defs>
+              <rect x="3.5" y="5" width="58" height="25" rx="10" fill="#000" opacity=".35"/>
+              <rect x="2" y="3" width="58" height="26" rx="10" fill="url(#carBody)"/>
+              <path d="M40 7.5c4.6 1.2 7.3 4.4 7.3 8.5s-2.7 7.3-7.3 8.5z" fill="#0B1524"/>
+              <path d="M14.5 8c-3 1.4-4.6 4.3-4.6 8s1.6 6.6 4.6 8z" fill="#14243B"/>
+              <rect x="16.5" y="7.5" width="22" height="17" rx="3.5" fill="#E2E3E6"/>
+              <rect x="56.6" y="6" width="3" height="5" rx="1.4" fill="#FFFFFF"/>
+              <rect x="56.6" y="21" width="3" height="5" rx="1.4" fill="#FFFFFF"/>
+              <rect x="2.6" y="6.5" width="2" height="4.5" rx="1" fill="#3A5578"/>
+              <rect x="2.6" y="21" width="2" height="4.5" rx="1" fill="#3A5578"/>
+              <rect x="37" y="1.4" width="4" height="3" rx="1" fill="#A8A8A8"/>
+              <rect x="37" y="27.6" width="4" height="3" rx="1" fill="#A8A8A8"/>
+            </svg>
+          </div>
+
+          <ol class="route-steps">
+            <li class="step">
+              <div class="step-node" aria-hidden="true"><span>01</span></div>
+              <div class="step-card">
+                <p class="step-kicker">Etapa 01</p>
+                <h3>Chame no WhatsApp</h3>
+                <p>Conte qual serviço você precisa. Respondemos rápido e tiramos todas as suas dúvidas.</p>
+              </div>
+            </li>
+            <li class="step">
+              <div class="step-node" aria-hidden="true"><span>02</span></div>
+              <div class="step-card">
+                <p class="step-kicker">Etapa 02</p>
+                <h3>Receba a orientação</h3>
+                <p>Informamos exatamente quais documentos são necessários para o seu caso e conferimos tudo antes de dar entrada.</p>
+              </div>
+            </li>
+            <li class="step">
+              <div class="step-node" aria-hidden="true"><span>03</span></div>
+              <div class="step-card">
+                <p class="step-kicker">Etapa 03</p>
+                <h3>Deixe o Detran com a gente</h3>
+                <p>Damos entrada no processo e acompanhamos cada etapa junto ao Detran MG, mantendo você informado.</p>
+              </div>
+            </li>
+            <li class="step">
+              <div class="step-node" aria-hidden="true"><span>04</span></div>
+              <div class="step-card">
+                <p class="step-kicker">Etapa 04</p>
+                <h3>Documento pronto</h3>
+                <p>Processo concluído e veículo regularizado. Você segue em frente, sem perder tempo com burocracia.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <div class="process-cta" data-reveal>
+          <a class="btn btn-metal btn-lg" data-wa="" data-magnetic href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Começar agora pelo WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Por que a Mentor ================= -->
+    <section class="pillars" id="por-que" aria-labelledby="porque-title">
+      <div class="container">
+        <header class="section-head section-head--split">
+          <div>
+            <p class="eyebrow" data-reveal>03 · Por que a Mentor</p>
+            <h2 class="section-title" id="porque-title" data-split>Mais do que um lema: o nosso jeito de trabalhar</h2>
+          </div>
+          <p class="section-lead" data-reveal>Agilidade, confiança e resultados estão na nossa logo porque guiam cada atendimento, do primeiro contato ao documento pronto.</p>
+        </header>
+
+        <ol class="pillar-list">
+          <li class="pillar">
+            <span class="pillar-num">01</span>
+            <h3 class="pillar-word"><span class="pillar-outline">Agilidade</span><span class="pillar-fill" aria-hidden="true">Agilidade</span></h3>
+            <p class="pillar-text" data-reveal>Atendimento rápido pelo WhatsApp e processos conduzidos sem enrolação. Seu tempo vale muito, e a gente respeita isso.</p>
+          </li>
+          <li class="pillar">
+            <span class="pillar-num">02</span>
+            <h3 class="pillar-word"><span class="pillar-outline">Confiança</span><span class="pillar-fill" aria-hidden="true">Confiança</span></h3>
+            <p class="pillar-text" data-reveal>Orientação clara do começo ao fim: você sabe o que precisa, o que está sendo feito e em que etapa está o seu processo.</p>
+          </li>
+          <li class="pillar">
+            <span class="pillar-num">03</span>
+            <h3 class="pillar-word"><span class="pillar-outline">Resultados</span><span class="pillar-fill" aria-hidden="true">Resultados</span></h3>
+            <p class="pillar-text" data-reveal>O que importa é o veículo regularizado e o documento na sua mão. É para isso que a gente trabalha.</p>
+          </li>
+        </ol>
+
+        <div class="stats">
+          <p class="stat" data-reveal>
+            <span class="stat-value"><span data-count="6">6</span></span>
+            <span class="stat-label">serviços especializados para o seu veículo</span>
+          </p>
+          <p class="stat" data-reveal>
+            <span class="stat-value"><span data-count="100">100</span><span class="stat-unit">%</span></span>
+            <span class="stat-label">dos serviços relacionados ao Detran MG</span>
+          </p>
+          <p class="stat" data-reveal>
+            <span class="stat-value"><span data-count="1">1</span></span>
+            <span class="stat-label">mensagem no WhatsApp para começar</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Dúvidas ================= -->
+    <section class="faq" id="duvidas" aria-labelledby="duvidas-title">
+      <div class="container faq-grid">
+        <header class="section-head faq-head">
+          <p class="eyebrow" data-reveal>04 · Dúvidas</p>
+          <h2 class="section-title" id="duvidas-title" data-split>Perguntas frequentes</h2>
+          <p class="section-lead" data-reveal>Não encontrou o que procurava? Chame a gente no WhatsApp e tire sua dúvida com quem entende.</p>
+          <div data-reveal>
+            <a class="btn btn-navy" data-wa="" href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+              <svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Tirar dúvida no WhatsApp
+            </a>
+          </div>
+        </header>
+
+        <div class="faq-list" data-faq>
+          <details class="faq-item" data-reveal>
+            <summary><span>O que faz um despachante de veículos?</span><span class="faq-icon" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></summary>
+            <div class="faq-panel"><p>O despachante representa você junto ao Detran: confere a documentação, dá entrada nos processos, acompanha cada etapa e orienta sobre vistorias e laudos. Você economiza tempo e evita erros que atrasam o processo.</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary><span>Qual é o prazo para transferir um veículo depois da compra?</span><span class="faq-icon" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></summary>
+            <div class="faq-panel"><p>Pelo Código de Trânsito Brasileiro, o comprador tem 30 dias a partir da data da venda para fazer a transferência. Depois desse prazo, a falta de transferência gera multa, então quanto antes você começar, melhor.</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary><span>Quais documentos eu preciso separar?</span><span class="faq-icon" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></summary>
+            <div class="faq-panel"><p>Depende do serviço. Em geral, são pedidos documento de identificação com CPF, comprovante de endereço e o documento do veículo. Pelo WhatsApp, informamos a lista exata para o seu caso antes de começar.</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary><span>Preciso ir ao Detran?</span><span class="faq-icon" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></summary>
+            <div class="faq-panel"><p>Em geral, não: nós cuidamos dos trâmites junto ao Detran MG por você. Quando o serviço exige vistoria, explicamos onde e como levar o veículo.</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary><span>Quanto custa?</span><span class="faq-icon" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></summary>
+            <div class="faq-panel"><p>O valor varia conforme o serviço e as taxas cobradas pelo Detran MG. Chame no WhatsApp, conte o que você precisa e receba um orçamento sem compromisso.</p></div>
+          </details>
+          <details class="faq-item" data-reveal>
+            <summary><span>Como solicito um serviço?</span><span class="faq-icon" aria-hidden="true"><svg><use href="#i-plus"/></svg></span></summary>
+            <div class="faq-panel"><p>É simples: toque em qualquer botão de WhatsApp desta página ou ligue para (31) 99966-0016. A gente orienta você em todo o passo a passo.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Chamada final ================= -->
+    <section class="cta" id="contato" aria-labelledby="cta-title">
+      <div class="cta-bg" aria-hidden="true">
+        <svg class="cta-symbol" viewBox="876 150 130 116" focusable="false">
+          <path class="cta-fill" d="M999.482,156.226L982.269,165.411L945.321,201.030L909.870,165.956L893.787,159.523L893.787,232.086L906.766,224.412L906.766,182.134L936.384,210.807L944.286,207.211L964.525,201.115L986.266,179.356L986.266,241.069L999.482,248.010Z"/>
+          <path class="cta-fill" d="M882.200,259.600C909.070,229.650 944.278,211.164 979.800,207.000C950.882,225.400 952.946,243.585 975.084,259.600Z"/>
+          <path class="cta-line" d="M999.482,156.226L982.269,165.411L945.321,201.030L909.870,165.956L893.787,159.523L893.787,232.086L906.766,224.412L906.766,182.134L936.384,210.807L944.286,207.211L964.525,201.115L986.266,179.356L986.266,241.069L999.482,248.010Z" vector-effect="non-scaling-stroke"/>
+          <path class="cta-line" d="M882.200,259.600C909.070,229.650 944.278,211.164 979.800,207.000C944.484,219.151 925.611,231.746 912.823,259.600Z" vector-effect="non-scaling-stroke"/>
+          <path class="cta-line" d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000C950.882,225.400 952.946,243.585 975.084,259.600Z" vector-effect="non-scaling-stroke"/>
+          <path class="cta-lane" d="M928.5 262 C934 248 944 232 966 213.5" vector-effect="non-scaling-stroke"/>
+        </svg>
+        <div class="noise"></div>
+      </div>
+      <div class="container cta-inner">
+        <p class="eyebrow eyebrow--dark" data-reveal>Fale com a Mentor</p>
+        <h2 class="cta-title" id="cta-title" data-split>Seu veículo em dia começa com uma mensagem.</h2>
+        <p class="cta-lead" data-reveal>Conte o que você precisa e receba orientação clara, rápida e sem compromisso.</p>
+        <div class="cta-actions" data-reveal>
+          <a class="btn btn-metal btn-xl" data-wa="" data-magnetic href="https://wa.me/5531999660016" target="_blank" rel="noopener">
+            <svg aria-hidden="true"><use href="#i-whatsapp"/></svg> Chamar no WhatsApp
+          </a>
+          <a class="btn btn-ghost btn-xl" href="tel:+5531999660016">
+            <svg aria-hidden="true"><use href="#i-phone"/></svg> (31) 99966-0016
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= Rodapé ================= -->
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <img src="assets/img/logo-despachantes-mentor.svg" width="276" height="223" alt="Despachantes Mentor — Agilidade, Confiança, Resultados" loading="lazy" decoding="async">
+        <p>Despachante de veículos. Executamos todos os serviços relacionados ao Detran MG, com agilidade, confiança e resultados.</p>
+      </div>
+      <nav class="footer-col" aria-label="Serviços">
+        <p class="footer-title">Serviços</p>
+        <ul class="footer-list">
+          <li><a href="#servicos">Transferência</a></li>
+          <li><a href="#servicos">2ª via CRV / CRLV</a></li>
+          <li><a href="#servicos">Emplacamentos</a></li>
+          <li><a href="#servicos">Cadastro de motor</a></li>
+          <li><a href="#servicos">Laudos</a></li>
+          <li><a href="#servicos">Vistorias</a></li>
+        </ul>
+      </nav>
+      <div class="footer-col">
+        <p class="footer-title">Contato</p>
+        <ul class="footer-list footer-contact">
+          <li><a data-wa="" href="https://wa.me/5531999660016" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-whatsapp"/></svg> WhatsApp (31) 99966-0016</a></li>
+          <li><a href="tel:+5531999660016"><svg aria-hidden="true"><use href="#i-phone"/></svg> Ligar (31) 99966-0016</a></li>
+        </ul>
+        <a class="btn btn-metal btn-sm" data-wa="" href="https://wa.me/5531999660016" target="_blank" rel="noopener">Pedir orçamento</a>
+      </div>
+    </div>
+
+    <div class="container footer-mark" aria-hidden="true">
+      <svg viewBox="818 302 252 25" focusable="false">
+        <path class="fm-rule fm-rule--l" d="M821.65,313.575H849.55V315.125H821.65Z"/>
+        <path class="fm-rule fm-rule--r" d="M1039.65,313.575H1067.65V315.125H1039.65Z"/>
+        <path class="fm-letter" vector-effect="non-scaling-stroke" d="M859.650 323.750V305.900H862.723L871.107 320.705H871.267L879.607 305.900H882.708V323.750H880.347V309.262H880.249L872.075 323.750H870.190L862.050 309.262H861.936V323.750Z"/>
+        <path class="fm-letter" vector-effect="non-scaling-stroke" d="M896.664 323.750V305.900H911.458V307.755H899.072V313.815H909.848V315.670H899.072V321.895H911.458V323.750Z"/>
+        <path class="fm-letter" vector-effect="non-scaling-stroke" d="M923.889 323.750V305.900H926.322L938.991 320.182H939.106V305.900H941.392V323.750H939.129L926.290 309.257H926.175V323.750Z"/>
+        <path class="fm-letter" vector-effect="non-scaling-stroke" d="M960.396 323.750V307.797H953.008V305.900H970.189V307.797H962.788V323.750Z"/>
+        <path class="fm-letter" vector-effect="non-scaling-stroke" d="M990.347 323.958Q987.689 323.958 985.959 323.747Q984.228 323.536 983.227 322.980Q982.226 322.425 981.746 321.399Q981.266 320.373 981.137 318.761Q981.009 317.149 981.009 314.825Q981.009 312.501 981.137 310.889Q981.266 309.277 981.746 308.251Q982.226 307.225 983.227 306.670Q984.228 306.114 985.962 305.903Q987.696 305.692 990.351 305.692Q993.005 305.692 994.739 305.903Q996.473 306.114 997.466 306.670Q998.460 307.225 998.932 308.251Q999.404 309.277 999.533 310.889Q999.661 312.501 999.661 314.825Q999.661 317.149 999.533 318.761Q999.404 320.373 998.932 321.399Q998.460 322.425 997.468 322.980Q996.476 323.536 994.740 323.747Q993.005 323.958 990.347 323.958ZM990.351 322.103Q992.318 322.103 993.585 322.018Q994.852 321.933 995.597 321.584Q996.342 321.236 996.700 320.460Q997.059 319.684 997.156 318.325Q997.254 316.965 997.254 314.825Q997.254 312.685 997.156 311.325Q997.059 309.966 996.700 309.190Q996.342 308.414 995.597 308.066Q994.852 307.717 993.582 307.632Q992.313 307.547 990.343 307.547Q988.388 307.547 987.119 307.632Q985.849 307.717 985.096 308.064Q984.344 308.411 983.985 309.188Q983.627 309.966 983.522 311.325Q983.417 312.685 983.417 314.825Q983.417 316.965 983.522 318.325Q983.627 319.684 983.985 320.462Q984.344 321.239 985.096 321.586Q985.849 321.933 987.121 322.018Q988.392 322.103 990.351 322.103Z"/>
+        <path class="fm-letter" vector-effect="non-scaling-stroke" d="M1012.785 323.750V305.900H1023.241Q1025.288 305.900 1026.523 306.313Q1027.759 306.726 1028.382 307.458Q1029.004 308.190 1029.210 309.155Q1029.416 310.119 1029.416 311.223Q1029.416 312.412 1029.146 313.425Q1028.876 314.437 1028.138 315.174Q1027.399 315.911 1025.954 316.307L1029.680 323.750H1027.099L1023.238 315.905L1024.554 316.319Q1024.110 316.578 1023.634 316.625Q1023.158 316.672 1022.688 316.672H1015.193V323.750ZM1015.193 314.817H1022.168Q1023.873 314.817 1024.859 314.592Q1025.845 314.366 1026.307 313.915Q1026.769 313.464 1026.904 312.790Q1027.039 312.117 1027.039 311.223Q1027.039 310.357 1026.925 309.711Q1026.811 309.066 1026.375 308.629Q1025.939 308.192 1025.027 307.974Q1024.115 307.755 1022.504 307.755H1015.193Z"/>
+      </svg>
+    </div>
+
+    <div class="container footer-bottom">
+      <p>© <span data-year>2026</span> Despachantes Mentor. Todos os direitos reservados.</p>
+      <a class="to-top" href="#inicio">Voltar ao topo <svg aria-hidden="true"><use href="#i-arrow-up"/></svg></a>
+    </div>
+  </footer>
+
+  <a class="wa-float" data-wa="" href="https://wa.me/5531999660016" target="_blank" rel="noopener" aria-label="Falar com a Despachantes Mentor no WhatsApp">
+    <svg aria-hidden="true"><use href="#i-whatsapp"/></svg>
+    <span class="wa-dot" aria-hidden="true"></span>
+  </a>
+</body>
+</html>
