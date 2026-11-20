@@ -2,7 +2,7 @@
    Despachantes Mentor — interações e animações
    GSAP 3.15 · ScrollTrigger · SplitText · DrawSVG · MotionPath · ScrollTo
 
-   Hero com entrada discreta; em "Como funciona", um carro percorre a estrada
+   Hero com entrada discreta; em "Valores e serviços", um carro percorre a estrada
    do símbolo da marca conforme a rolagem e acende cada etapa do atendimento.
    ========================================================================== */
 (() => {
@@ -408,7 +408,7 @@
   }
 
   /* ======================================================================
-     COMO FUNCIONA — o carro percorre a estrada com a rolagem
+     VALORES E SERVIÇOS — o carro percorre a estrada com a rolagem
      ====================================================================== */
   function initRoute(animated) {
     const route = $("[data-route]");
