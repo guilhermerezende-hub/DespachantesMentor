@@ -449,7 +449,9 @@
         return { x: r.left - rb.left + r.width / 2, y: r.top - rb.top + r.height / 2 };
       });
       const cx = pts[0].x;
-      const amp = isDesktop() ? Math.min(96, w * 0.08) : 6;
+      // desktop: estrada em curvas; tablet: ondulação leve; celular: linha reta
+      const isPhone = window.matchMedia("(max-width: 639.98px)").matches;
+      const amp = isDesktop() ? Math.min(96, w * 0.08) : isPhone ? 0 : 6;
 
       const way = [{ x: cx, y: 0 }];
       pts.forEach((p, i) => {
