@@ -503,37 +503,46 @@
     <!-- ================= Chamada final ================= -->
     <section class="cta" id="contato" aria-labelledby="cta-title">
       <div class="cta-bg" aria-hidden="true">
-        <!-- Cena: o M da logo (com volume) e a estrada da logo em versão realista -->
+        <!-- Cena: o M da logo (com volume) no fim de uma estrada real em perspectiva -->
         <svg class="cta-symbol cta-road" viewBox="864 142 150 126" focusable="false">
           <defs>
             <path id="crMPath" d="M999.482,156.226L982.269,165.411L945.321,201.030L909.870,165.956L893.787,159.523L893.787,232.086L906.766,224.412L906.766,182.134L936.384,210.807L944.286,207.211L964.525,201.115L986.266,179.356L986.266,241.069L999.482,248.010Z"/>
-            <path id="crRoadPath" d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000C950.882,225.400 952.946,243.585 975.084,259.600Z"/>
-            <path id="crCurbPath" d="M882.200,259.600C909.070,229.650 944.278,211.164 979.800,207.000C944.484,219.151 925.611,231.746 912.823,259.600Z"/>
             <clipPath id="crMClip"><use href="#crMPath"/></clipPath>
-            <clipPath id="crRoadClip"><use href="#crRoadPath"/></clipPath>
-            <clipPath id="crCurbClip"><use href="#crCurbPath"/></clipPath>
             <linearGradient id="crMFace" gradientUnits="userSpaceOnUse" x1="894" y1="156" x2="1000" y2="248">
               <stop offset="0" stop-color="#F3F3F4"/><stop offset=".5" stop-color="#D4D5D8"/><stop offset="1" stop-color="#B8BABF"/>
             </linearGradient>
             <linearGradient id="crSheen" x1="0" y1="0" x2="1" y2="0">
               <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".5" stop-color="#FFFFFF" stop-opacity=".8"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
             </linearGradient>
-            <linearGradient id="crAsphalt" gradientUnits="userSpaceOnUse" x1="944" y1="262" x2="979" y2="207">
-              <stop offset="0" stop-color="#4C4F56"/><stop offset=".55" stop-color="#3A3D43"/><stop offset="1" stop-color="#2B2E33"/>
+            <linearGradient id="crAsphalt" gradientUnits="userSpaceOnUse" x1="0" y1="282" x2="0" y2="214">
+              <stop offset="0" stop-color="#4F535A"/><stop offset=".5" stop-color="#3A3D44"/><stop offset="1" stop-color="#2A2D33"/>
             </linearGradient>
-            <linearGradient id="crCurb" gradientUnits="userSpaceOnUse" x1="890" y1="262" x2="978" y2="206">
-              <stop offset="0" stop-color="#DADBDE"/><stop offset=".55" stop-color="#C3C5C9"/><stop offset="1" stop-color="#9DA0A6"/>
+            <linearGradient id="crShoulder" gradientUnits="userSpaceOnUse" x1="0" y1="282" x2="0" y2="214">
+              <stop offset="0" stop-color="#2B3038"/><stop offset="1" stop-color="#1A1F28"/>
             </linearGradient>
             <radialGradient id="crAura"><stop offset="0" stop-color="#8FA6C4" stop-opacity=".4"/><stop offset="1" stop-color="#8FA6C4" stop-opacity="0"/></radialGradient>
             <radialGradient id="crGlow"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".3" stop-color="#EEF3FF" stop-opacity=".45"/><stop offset="1" stop-color="#EEF3FF" stop-opacity="0"/></radialGradient>
-            <radialGradient id="crPool"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".32"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
+            <radialGradient id="crPool"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".3"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></radialGradient>
             <filter id="crBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.8"/></filter>
-            <mask id="crPave" maskUnits="userSpaceOnUse" x="850" y="186" width="180" height="96">
-              <path class="cr-pave" d="M928 274 L928 262 C930 240 945 222 988 202" fill="none" stroke="#fff" stroke-width="106"/>
-            </mask>
           </defs>
 
           <ellipse class="cr-aura" cx="946" cy="204" rx="74" ry="54" fill="url(#crAura)"/>
+
+          <!-- Estrada (geometria gerada no JS a partir de uma câmera em perspectiva) -->
+          <g class="cr-road">
+            <path class="cr-shoulder cr-shoulder--l" fill="url(#crShoulder)"/>
+            <path class="cr-shoulder cr-shoulder--r" fill="url(#crShoulder)"/>
+            <path class="cr-asphalt" fill="url(#crAsphalt)"/>
+            <g class="cr-paint" fill="#EEF0F3">
+              <path class="cr-line cr-line--l"/>
+              <path class="cr-line cr-line--r"/>
+            </g>
+            <g class="cr-dashes" fill="#F4F5F7"></g>
+            <g class="cr-posts"></g>
+            <ellipse class="cr-beam" fill="url(#crPool)"/>
+            <g class="cr-lights"></g>
+          </g>
+          <ellipse class="cr-haze" cx="948" cy="214" rx="26" ry="3" fill="url(#crGlow)" opacity=".45"/>
 
           <!-- M com volume: sombra, camadas de profundidade, face metálica, reflexo e borda -->
           <g class="cr-m">
@@ -544,25 +553,6 @@
             <use href="#crMPath" fill="url(#crMFace)"/>
             <g clip-path="url(#crMClip)"><polygon class="cr-m-sheen" points="880,150 898,150 862,262 844,262" fill="url(#crSheen)"/></g>
             <use href="#crMPath" fill="none" stroke="#FFFFFF" stroke-opacity=".6" stroke-width=".35" stroke-linejoin="round"/>
-          </g>
-
-          <!-- Estrada: calçada, asfalto, marcas de pneu, faixas e faróis (gerados no JS) -->
-          <g class="cr-road" mask="url(#crPave)">
-            <use href="#crCurbPath" fill="url(#crCurb)"/>
-            <g clip-path="url(#crCurbClip)" fill="none">
-              <path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000" stroke="#8B8E94" stroke-width="4.2" stroke-opacity=".5"/>
-              <path d="M912.823,259.600C925.611,231.746 944.484,219.151 979.800,207.000" stroke="#7B7E84" stroke-width="2" stroke-opacity=".75"/>
-            </g>
-            <use href="#crRoadPath" fill="url(#crAsphalt)"/>
-            <g clip-path="url(#crRoadClip)">
-              <g class="cr-tracks" fill="#000" opacity=".18"></g>
-              <g class="cr-edges" fill="#15171B" opacity=".6"></g>
-              <g class="cr-fogs" fill="#EEF0F3"></g>
-              <g class="cr-dashes" fill="#F4F5F7" stroke="#F4F5F7">
-                <path class="cr-static" d="M929.131,262.904L933.346,251.578L930.797,250.420L926.379,261.990ZM935.732,246.682L941.219,237.571L939.134,236.102L933.305,245.389ZM944.881,232.709L952.061,224.865L950.486,223.189L942.947,231.126ZM954.572,222.470L959.783,218.230L958.672,216.689L953.201,220.879ZM962.681,216.062L965.831,214.004L965.127,212.794L961.808,214.721Z" stroke="none"/>
-              </g>
-              <g class="cr-lights"></g>
-            </g>
           </g>
         </svg>
         <div class="noise"></div>

@@ -559,8 +559,9 @@
   }
 
   /* ======================================================================
-     Chamada final: o M da logo com volume e a estrada da logo em versão
-     realista — perspectiva, faixas, marcas de pneu e faróis de um carro
+     Chamada final: o M da logo (com volume) no fim de uma estrada real.
+     A estrada é desenhada a partir de uma câmera em perspectiva: u = 1/z
+     (z = distância), então tudo afina e se aproxima do horizonte sozinho.
      ====================================================================== */
   function ctaScene(animated) {
     const svg = $(".cta-road");
@@ -578,116 +579,142 @@
       return k * k * (3 - 2 * k);
     };
 
-    // Bordas da estrada da logo (Bézier cúbicas), do primeiro plano (t = 0) ao horizonte (t = 1)
-    const bez = (a, b, c, d, t) => {
-      const u = 1 - t;
-      return [
-        u * u * u * a[0] + 3 * u * u * t * b[0] + 3 * u * t * t * c[0] + t * t * t * d[0],
-        u * u * u * a[1] + 3 * u * u * t * b[1] + 3 * u * t * t * c[1] + t * t * t * d[1],
-      ];
-    };
-    const edgeL = (t) => bez([912.823, 259.6], [925.611, 231.746], [944.484, 219.151], [979.8, 207], t);
-    const edgeR = (t) => bez([975.084, 259.6], [952.946, 243.585], [950.882, 225.4], [979.8, 207], t);
-    // ponto a uma fração k da largura da pista (0 = borda esquerda, 1 = direita)
-    const at = (t, k) => {
-      const a = edgeL(t), b = edgeR(t);
-      return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
-    };
-    const roadWidth = (t) => {
-      const a = edgeL(t), b = edgeR(t);
-      return Math.hypot(b[0] - a[0], b[1] - a[1]);
-    };
-    // perspectiva: distância real d (0 = perto, 1 = horizonte) → posição t na curva
-    const depth = (d) => (1 - 1 / (1 + 3 * d)) / 0.75;
-    const laneAt = (t) => 0.28 + 0.22 * t; // faixa central na mesma posição da logo
+    // Câmera: horizonte logo abaixo do "V" do M; a pista faz uma curva suave até lá
+    const HORIZON = 214;
+    const VANISH_X = 948;
+    const NEAR = 1.14; // u além da borda inferior: a estrada nunca "termina" embaixo
+    const yAt = (u) => HORIZON + 60 * u;
+    const half = (u) => 62 * u;
+    const center = (u) => VANISH_X + u * (-6 - 50 * (1 - u));
+    // ponto na pista: k = 0 borda esquerda, 1 borda direita (fora disso = acostamento)
+    const at = (u, k) => [center(u) - half(u) + 2 * half(u) * k, yAt(u)];
+    const poly = (pts) => "M" + pts.map((p) => `${fmt(p[0])},${fmt(p[1])}`).join("L") + "Z";
 
-    // Faixas contínuas que afinam com a distância (laterais, sombras das bordas e marcas de pneu)
-    const strip = (k1, k2) => {
+    let far = animated ? NEAR : 0.004; // até onde a estrada já foi "construída"
+
+    // Faixas contínuas entre duas posições laterais, do primeiro plano até `far`
+    const band = (k1, k2) => {
+      if (far >= NEAR - 0.001) return "";
       const a = [];
       const b = [];
-      for (let i = 0; i <= 64; i++) {
-        const t = i / 64;
-        a.push(at(t, k1));
-        b.push(at(t, k2));
+      const steps = 72;
+      for (let i = 0; i <= steps; i++) {
+        const u = NEAR * Math.pow(far / NEAR, i / steps); // amostragem mais densa perto do horizonte
+        a.push(at(u, k1));
+        b.push(at(u, k2));
       }
-      return "M" + a.concat(b.reverse()).map((p) => `${fmt(p[0])},${fmt(p[1])}`).join("L") + "Z";
+      return poly(a.concat(b.reverse()));
     };
-    const tracks = $(".cr-tracks", svg);
-    const edges = $(".cr-edges", svg);
-    const fogs = $(".cr-fogs", svg);
-    [[0.1, 0.17], [0.56, 0.63], [0.78, 0.85]].forEach(([a, b]) => make(tracks, "path", { d: strip(a, b) }));
-    [[0, 0.025], [0.975, 1]].forEach(([a, b]) => make(edges, "path", { d: strip(a, b) }));
-    [[0.04, 0.07], [0.93, 0.96]].forEach(([a, b]) => make(fogs, "path", { d: strip(a, b) }));
+    const shoulderL = $(".cr-shoulder--l", svg);
+    const shoulderR = $(".cr-shoulder--r", svg);
+    const asphalt = $(".cr-asphalt", svg);
+    const lineL = $(".cr-line--l", svg);
+    const lineR = $(".cr-line--r", svg);
+    const drawRoad = () => {
+      shoulderL.setAttribute("d", band(-0.17, 0));
+      shoulderR.setAttribute("d", band(1, 1.17));
+      asphalt.setAttribute("d", band(0, 1));
+      lineL.setAttribute("d", band(0.035, 0.06));
+      lineR.setAttribute("d", band(0.94, 0.965));
+    };
 
-    // Faixa tracejada com perspectiva (substitui os traços fixos da versão sem JS)
+    // Objetos que "passam" pela câmera: faixa central tracejada e balizadores nos acostamentos
+    const Z0 = 0.8;
+    const Z_MAX = 38;
+    const DASH_GAP = 0.9;
+    const DASH_LEN = 0.38;
+    const POST_GAP = 2.4;
     const dashLayer = $(".cr-dashes", svg);
-    const fixed = $(".cr-static", svg);
-    if (fixed) fixed.remove();
-    const COUNT = 16;
-    const HALF = 0.55 / COUNT / 2;
-    const dashes = Array.from({ length: COUNT }, () => make(dashLayer, "line", { "stroke-linecap": "butt" }));
-    const drawDashes = (phase) => {
+    const postLayer = $(".cr-posts", svg);
+    const dashes = Array.from({ length: Math.ceil((Z_MAX - Z0) / DASH_GAP) }, () => make(dashLayer, "path"));
+    const posts = [];
+    for (let i = 0; i < Math.ceil((Z_MAX - Z0) / POST_GAP); i++) {
+      [-0.09, 1.09].forEach((k) => {
+        posts.push({
+          k,
+          i,
+          body: make(postLayer, "rect", { fill: "#B9BDC4" }),
+          tag: make(postLayer, "rect", { fill: "#FFFFFF" }),
+        });
+      });
+    }
+    const drawTraffic = (s) => {
+      const dashShift = s % DASH_GAP;
       dashes.forEach((el, i) => {
-        const d = ((((i - phase) / COUNT) % 1) + 1) % 1;
-        const t1 = depth(d - HALF);
-        const t2 = depth(Math.min(1, d + HALF));
-        const p1 = at(t1, laneAt(t1));
-        const p2 = at(t2, laneAt(t2));
-        el.setAttribute("x1", fmt(p1[0]));
-        el.setAttribute("y1", fmt(p1[1]));
-        el.setAttribute("x2", fmt(p2[0]));
-        el.setAttribute("y2", fmt(p2[1]));
-        el.setAttribute("stroke-width", fmt(roadWidth(depth(d)) * 0.045));
-        el.setAttribute("opacity", fmt(1 - smooth(0.72, 1, d)));
+        const z1 = Z0 + (i + 1) * DASH_GAP - dashShift;
+        const z2 = z1 + DASH_LEN;
+        const u1 = 1 / z1;
+        const u2 = 1 / z2;
+        if (u2 <= far) { el.setAttribute("d", ""); return; }
+        el.setAttribute("d", poly([at(u1, 0.49), at(u1, 0.51), at(u2, 0.51), at(u2, 0.49)]));
+        el.setAttribute("opacity", fmt(smooth(0.03, 0.09, u2)));
+      });
+      const postShift = s % POST_GAP;
+      posts.forEach((p) => {
+        const z = Z0 + (p.i + 1) * POST_GAP - postShift;
+        const u = 1 / z;
+        if (u <= far) { p.body.setAttribute("height", "0"); p.tag.setAttribute("height", "0"); return; }
+        const [x, y] = at(u, p.k);
+        const h = half(u) * 0.24;
+        const w = Math.max(0.15, half(u) * 0.035);
+        const alpha = fmt(smooth(0.03, 0.1, u));
+        p.body.setAttribute("x", fmt(x - w / 2)); p.body.setAttribute("y", fmt(y - h));
+        p.body.setAttribute("width", fmt(w)); p.body.setAttribute("height", fmt(h));
+        p.tag.setAttribute("x", fmt(x - w / 2)); p.tag.setAttribute("y", fmt(y - h));
+        p.tag.setAttribute("width", fmt(w)); p.tag.setAttribute("height", fmt(h * 0.22));
+        p.body.setAttribute("opacity", alpha); p.tag.setAttribute("opacity", alpha);
       });
     };
-    drawDashes(0.35);
 
-    // Faróis de um carro que vem do horizonte, iluminando o asfalto à frente
+    // Faróis do nosso carro iluminando a pista à frente (faixa da direita)
+    const beam = $(".cr-beam", svg);
+    const drawBeam = () => {
+      const [bx, by] = at(0.8, 0.74);
+      beam.setAttribute("cx", fmt(bx)); beam.setAttribute("cy", fmt(by));
+      beam.setAttribute("rx", fmt(half(0.8) * 0.5)); beam.setAttribute("ry", fmt(half(0.8) * 0.13));
+      beam.setAttribute("opacity", far < 0.75 ? "0.85" : "0");
+    };
+
+    // Carro na contramão (faixa da esquerda, como nas estradas brasileiras)
     const lights = $(".cr-lights", svg);
     const pool = make(lights, "ellipse", { fill: "url(#crPool)" });
     const glows = [0, 1].map(() => make(lights, "circle", { fill: "url(#crGlow)" }));
     const cores = [0, 1].map(() => make(lights, "circle", { fill: "#FFFFFF" }));
-    const car = { d: 1.1 };
+    const car = { z: 30 };
     const drawCar = () => {
-      const t = depth(car.d);
-      const w = roadWidth(t);
-      [0.63, 0.8].forEach((k, i) => {
-        const p = at(t, k);
-        [cores[i], glows[i]].forEach((el) => { el.setAttribute("cx", fmt(p[0])); el.setAttribute("cy", fmt(p[1])); });
-        cores[i].setAttribute("r", fmt(w * 0.03));
-        glows[i].setAttribute("r", fmt(w * 0.16));
+      const u = 1 / car.z;
+      [0.14, 0.36].forEach((k, i) => {
+        const [x, y] = at(u, k);
+        const r = half(u) * 0.045;
+        cores[i].setAttribute("cx", fmt(x)); cores[i].setAttribute("cy", fmt(y - r)); cores[i].setAttribute("r", fmt(r));
+        glows[i].setAttribute("cx", fmt(x)); glows[i].setAttribute("cy", fmt(y - r)); glows[i].setAttribute("r", fmt(r * 5));
       });
-      const tp = depth(car.d - 0.08);
-      const c = at(tp, 0.71);
-      const a = edgeL(tp);
-      const b = edgeR(tp);
-      const angle = (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI;
-      pool.setAttribute("cx", fmt(c[0]));
-      pool.setAttribute("cy", fmt(c[1]));
-      pool.setAttribute("rx", fmt(roadWidth(tp) * 0.3));
-      pool.setAttribute("ry", fmt(roadWidth(tp) * 0.13));
-      pool.setAttribute("transform", `rotate(${fmt(angle)} ${fmt(c[0])} ${fmt(c[1])})`);
-      lights.setAttribute("opacity", fmt(smooth(1.1, 0.85, car.d)));
+      const up = 1 / Math.max(0.5, car.z - 1.1);
+      const [px, py] = at(up, 0.25);
+      pool.setAttribute("cx", fmt(px)); pool.setAttribute("cy", fmt(py));
+      pool.setAttribute("rx", fmt(half(up) * 0.34)); pool.setAttribute("ry", fmt(half(up) * 0.1));
+      lights.setAttribute("opacity", u > far ? fmt(smooth(0.03, 0.07, u)) : "0");
     };
+
+    const travel = { s: 0 };
+    drawRoad();
+    drawTraffic(travel.s);
+    drawBeam();
+    car.z = 40;
     drawCar();
 
-    if (!animated) return; // movimento reduzido: cena estática, sem faróis
+    if (!animated) return; // movimento reduzido: cena estática
 
     const mark = $(".cr-m", svg);
     const road = $(".cr-road", svg);
-    const pave = $(".cr-pave", svg);
     const sheen = $(".cr-m-sheen", svg);
-
     gsap.set(mark, { opacity: 0, y: 10 });
-    gsap.set(pave, { drawSVG: "0%" });
-    gsap.set([tracks, fogs, dashLayer], { opacity: 0 });
 
-    const state = { phase: 0.35 };
     const loops = [
-      gsap.to(state, { phase: 1.35, duration: 0.6, ease: "none", repeat: -1, paused: true, onUpdate: () => drawDashes(state.phase) }),
-      gsap.timeline({ repeat: -1, repeatDelay: 2.4, paused: true })
-        .fromTo(car, { d: 1.1 }, { d: -0.3, duration: 4.8, ease: "none", onUpdate: drawCar }),
+      // 7,2 = múltiplo comum dos espaçamentos (faixas e balizadores): o loop não "pula"
+      gsap.to(travel, { s: 7.2, duration: 4, ease: "none", repeat: -1, paused: true, onUpdate: () => drawTraffic(travel.s) }),
+      gsap.timeline({ repeat: -1, repeatDelay: 2.6, paused: true })
+        .fromTo(car, { z: 30 }, { z: 0.7, duration: 3.4, ease: "none", onUpdate: drawCar }),
       gsap.fromTo(sheen, { x: 0 }, { x: 175, duration: 2.4, ease: "power2.inOut", repeat: -1, repeatDelay: 4.5, paused: true }),
     ];
 
@@ -703,17 +730,26 @@
     });
     visible = viewport.isActive;
 
-    // Entrada: o M surge e a estrada é pavimentada do primeiro plano até o horizonte
+    // Entrada: o M surge e a estrada é construída do primeiro plano até o horizonte
+    const build = { u: NEAR };
     gsap.timeline({ scrollTrigger: { trigger: ".cta", start: "top 70%", once: true } })
       .set(road, { opacity: 1 })
       .to(mark, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, 0)
-      .to(pave, { drawSVG: "100%", duration: 1.6, ease: "power2.inOut" }, 0.2)
-      .to([tracks, fogs], { opacity: 1, duration: 0.8 }, 1.1)
-      .to(dashLayer, { opacity: 1, duration: 0.6 }, 1.3)
-      .add(() => { started = true; sync(); }, 1.4);
+      .to(build, {
+        u: 0.004,
+        duration: 1.8,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          far = build.u;
+          drawRoad();
+          drawTraffic(travel.s);
+          drawBeam();
+        },
+      }, 0.15)
+      .add(() => { started = true; sync(); }, 1.6);
 
-    // Leve profundidade na rolagem (o corte reto da estrada da logo fica sempre abaixo da seção)
-    gsap.fromTo(".cta-symbol", { yPercent: 6 }, {
+    // Leve profundidade na rolagem
+    gsap.fromTo(".cta-symbol", { yPercent: 5 }, {
       yPercent: 0,
       ease: "none",
       scrollTrigger: { trigger: ".cta", start: "top bottom", end: "bottom top", scrub: true },
