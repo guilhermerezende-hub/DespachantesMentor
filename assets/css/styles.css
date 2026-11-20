@@ -882,7 +882,6 @@ p { text-wrap: pretty; }
 .cta-bg { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 /* Cena realista: M da logo com volume + estrada com perspectiva */
 .cta-symbol { position: absolute; right: -3%; bottom: 0; width: min(52vw, 700px); height: auto; aspect-ratio: 150 / 126; overflow: visible; }
-.cr-lights { mix-blend-mode: screen; }
 .anim .cr-m,
 .anim .cr-road { opacity: 0; }
 .cta-title {

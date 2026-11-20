@@ -666,42 +666,9 @@
       });
     };
 
-    // Faróis do nosso carro iluminando a pista à frente (faixa da direita)
-    const beam = $(".cr-beam", svg);
-    const drawBeam = () => {
-      const [bx, by] = at(0.8, 0.74);
-      beam.setAttribute("cx", fmt(bx)); beam.setAttribute("cy", fmt(by));
-      beam.setAttribute("rx", fmt(half(0.8) * 0.5)); beam.setAttribute("ry", fmt(half(0.8) * 0.13));
-      beam.setAttribute("opacity", far < 0.75 ? "0.85" : "0");
-    };
-
-    // Carro na contramão (faixa da esquerda, como nas estradas brasileiras)
-    const lights = $(".cr-lights", svg);
-    const pool = make(lights, "ellipse", { fill: "url(#crPool)" });
-    const glows = [0, 1].map(() => make(lights, "circle", { fill: "url(#crGlow)" }));
-    const cores = [0, 1].map(() => make(lights, "circle", { fill: "#FFFFFF" }));
-    const car = { z: 30 };
-    const drawCar = () => {
-      const u = 1 / car.z;
-      [0.14, 0.36].forEach((k, i) => {
-        const [x, y] = at(u, k);
-        const r = half(u) * 0.034;
-        cores[i].setAttribute("cx", fmt(x)); cores[i].setAttribute("cy", fmt(y - r * 1.4)); cores[i].setAttribute("r", fmt(r));
-        glows[i].setAttribute("cx", fmt(x)); glows[i].setAttribute("cy", fmt(y - r * 1.4)); glows[i].setAttribute("r", fmt(r * 4.2));
-      });
-      const up = 1 / Math.max(0.5, car.z - 1.1);
-      const [px, py] = at(up, 0.25);
-      pool.setAttribute("cx", fmt(px)); pool.setAttribute("cy", fmt(py));
-      pool.setAttribute("rx", fmt(half(up) * 0.34)); pool.setAttribute("ry", fmt(half(up) * 0.1));
-      lights.setAttribute("opacity", u > far ? fmt(smooth(0.03, 0.07, u)) : "0");
-    };
-
     const travel = { s: 0 };
     drawRoad();
     drawTraffic(travel.s);
-    drawBeam();
-    car.z = 40;
-    drawCar();
 
     if (!animated) return; // movimento reduzido: cena estática
 
@@ -713,8 +680,6 @@
     const loops = [
       // 7,2 = múltiplo comum dos espaçamentos (faixas e balizadores): o loop não "pula"
       gsap.to(travel, { s: 7.2, duration: 4, ease: "none", repeat: -1, paused: true, onUpdate: () => drawTraffic(travel.s) }),
-      gsap.timeline({ repeat: -1, repeatDelay: 2.6, paused: true })
-        .fromTo(car, { z: 11 }, { z: 0.7, duration: 2.9, ease: "none", onUpdate: drawCar }),
       gsap.fromTo(sheen, { x: 0 }, { x: 175, duration: 2.4, ease: "power2.inOut", repeat: -1, repeatDelay: 4.5, paused: true }),
     ];
 
@@ -743,7 +708,6 @@
           far = build.u;
           drawRoad();
           drawTraffic(travel.s);
-          drawBeam();
         },
       }, 0.15)
       .add(() => { started = true; sync(); }, 1.6);
