@@ -1,10 +1,9 @@
 /* ==========================================================================
    Despachantes Mentor — interações e animações
-   GSAP 3.15 · ScrollTrigger · SplitText · DrawSVG · MotionPath · ScrambleText · ScrollTo
+   GSAP 3.15 · ScrollTrigger · SplitText · DrawSVG · MotionPath · ScrollTo
 
-   Conceito: a estrada do símbolo da marca é o fio condutor. No topo, a logo se
-   desenha e a estrada é "pavimentada"; em "Como funciona", um carro percorre a
-   estrada conforme a rolagem e acende cada etapa do atendimento.
+   Hero com entrada discreta; em "Como funciona", um carro percorre a estrada
+   do símbolo da marca conforme a rolagem e acende cada etapa do atendimento.
    ========================================================================== */
 (() => {
   "use strict";
@@ -18,9 +17,12 @@
   /* ---------- Links de WhatsApp com mensagem pronta ---------- */
   const WA_NUMBER = "5531999660016";
   const waHref = (service) => {
-    const msg = service
-      ? `Olá! Vim pelo site da Despachantes Mentor e gostaria de solicitar: ${service}.`
-      : "Olá! Vim pelo site da Despachantes Mentor e gostaria de um atendimento.";
+    let msg = "Olá! Vim pelo site da Despachantes Mentor e gostaria de um atendimento.";
+    if (service === "empresa") {
+      msg = "Olá! Represento uma concessionária/revenda e gostaria de conhecer o atendimento empresarial da Despachantes Mentor.";
+    } else if (service) {
+      msg = `Olá! Vim pelo site da Despachantes Mentor e gostaria de solicitar o serviço: ${service}.`;
+    }
     return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
   };
   $$("[data-wa]").forEach((a) => { a.href = waHref(a.dataset.wa.trim()); });
@@ -38,9 +40,9 @@
     return;
   }
 
-  const fullKit = !!(window.ScrollToPlugin && window.SplitText && window.DrawSVGPlugin && window.MotionPathPlugin && window.ScrambleTextPlugin);
+  const fullKit = !!(window.ScrollToPlugin && window.SplitText && window.DrawSVGPlugin && window.MotionPathPlugin);
   if (fullKit) {
-    gsap.registerPlugin(ScrollTrigger, window.ScrollToPlugin, window.SplitText, window.DrawSVGPlugin, window.MotionPathPlugin, window.ScrambleTextPlugin);
+    gsap.registerPlugin(ScrollTrigger, window.ScrollToPlugin, window.SplitText, window.DrawSVGPlugin, window.MotionPathPlugin);
   } else {
     gsap.registerPlugin(ScrollTrigger);
   }
@@ -53,7 +55,6 @@
   ScrollTrigger.config({ ignoreMobileResize: true });
   gsap.defaults({ ease: "power3.out", duration: 0.9 });
 
-  const finePointer = window.matchMedia("(pointer: fine)").matches;
   const isDesktop = () => window.matchMedia("(min-width: 960px)").matches;
 
   let menuOpen = false;
@@ -81,8 +82,6 @@
 
     if (canAnimate) {
       heroIntro();
-      heroScroll();
-      marquee();
       reveals();
       serviceCards();
       pillars();
@@ -91,10 +90,7 @@
       footerMark();
 
       const mm = gsap.matchMedia();
-      mm.add("(min-width: 960px) and (pointer: fine)", () => {
-        const cleanups = [heroTilt(), magneticButtons()];
-        return () => cleanups.forEach((fn) => fn && fn());
-      });
+      mm.add("(min-width: 960px) and (pointer: fine)", () => magneticButtons());
     }
 
     requestAnimationFrame(() => ScrollTrigger.refresh());
@@ -290,111 +286,39 @@
   }
 
   /* ======================================================================
-     HERO — a logo se desenha e a estrada é pavimentada
+     HERO — entrada discreta (título por linhas, textos e cartão de atendimento)
      ====================================================================== */
   function heroIntro() {
     const title = $(".hero-title");
     const items = $$("[data-hero-item]");
-    const symbol = $(".hero-symbol");
-    const mFill = $(".hs-m-fill");
-    const mStroke = $(".hs-m-stroke");
-    const roadMask = $(".hs-road-mask");
-    const dashes = $$(".hs-dash");
-    const stage = $$(".stage-core, .stage-ring, .stage-ticks");
-    const floats = $$(".float-inner");
-    const sweepLines = $$(".hero-sweep .sweep-line");
-    const lane = $(".hero-sweep .sweep-lane");
+    const card = $(".hero-card");
+    const cardParts = card ? $$(".hero-option, .hero-card-contact", card) : [];
 
-    gsap.set([symbol, ".hero-sweep"], { opacity: 1 });
-    gsap.set(mFill, { opacity: 0 });
-    gsap.set(dashes, { opacity: 0 });
-    gsap.set(lane, { opacity: 0 });
-
-    // Título: palavras sobem de dentro de máscaras de linha
-    let firstSplit = true;
-    let idleStarted = false;
+    let first = true;
     SplitText.create(title, {
-      type: "lines, words",
+      type: "lines",
       mask: "lines",
       linesClass: "split-line",
-      wordsClass: "split-word",
       autoSplit: true,
       onSplit(self) {
-        title.classList.add("is-split");
         gsap.set(title, { opacity: 1 });
-        const tween = gsap.fromTo(self.words, { yPercent: 120 }, {
+        const tween = gsap.fromTo(self.lines, { yPercent: 110 }, {
           yPercent: 0,
-          duration: 1.15,
-          ease: "power4.out",
-          stagger: 0.045,
-          delay: firstSplit ? 0.3 : 0,
+          duration: 0.9,
+          ease: "power3.out",
+          stagger: 0.09,
+          delay: first ? 0.1 : 0,
         });
-        firstSplit = false;
-        if (idleStarted) titleSheen();
+        first = false;
         return tween;
       },
     });
 
-    const tl = gsap.timeline({ defaults: { ease: "power3.out" }, delay: 0.05 });
-    tl.fromTo(".header-inner", { y: -20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, 0)
-      .fromTo(sweepLines, { drawSVG: "0%" }, { drawSVG: "100%", duration: 2.4, ease: "power2.inOut", stagger: 0.2 }, 0)
-      .to(lane, { opacity: 1, duration: 1.2 }, 1)
-      .fromTo(stage, { scale: 0.8, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.6, stagger: 0.12, ease: "expo.out" }, 0.1)
-      .fromTo(mStroke, { drawSVG: "0%" }, { drawSVG: "100%", duration: 1.6, ease: "power2.inOut" }, 0.25)
-      .fromTo(roadMask, { drawSVG: "0%" }, { drawSVG: "100%", duration: 1.3, ease: "power2.inOut" }, 0.85)
-      .to(mFill, { opacity: 1, duration: 1 }, 1.3)
-      .to(mStroke, { opacity: 0, duration: 0.9 }, 1.6)
-      .to(dashes, { opacity: 1, duration: 0.3, stagger: 0.1, ease: "none" }, 1.45)
-      .fromTo(items, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.1 }, 0.55)
-      .fromTo(floats, { y: 34, scale: 0.82, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 1, stagger: 0.14, ease: "back.out(1.6)" }, 1.5)
-      .fromTo(".marquee", { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.1, ease: "expo.out" }, 1.1)
-      .add(scramblePlate, 1.6)
-      .add(() => { idleStarted = true; heroIdle(dashes); });
-
-    const plate = $("[data-plate]");
-    if (plate && finePointer) plate.addEventListener("pointerenter", scramblePlate);
-  }
-
-  function scramblePlate() {
-    const code = $("[data-plate-code]");
-    if (!code || gsap.isTweening(code)) return;
-    gsap.to(code, {
-      duration: 1.5,
-      ease: "none",
-      scrambleText: { text: "MNT0R26", chars: "ABCDEFGHJKLMNPRSTUVWXYZ0123456789", revealDelay: 0.35, speed: 0.55 },
-    });
-  }
-
-  let sheenTween = null;
-  function titleSheen() {
-    if (sheenTween) sheenTween.kill();
-    const words = $$(".hero-title .text-metal .split-word");
-    if (!words.length) return;
-    sheenTween = gsap.to(words, {
-      backgroundPosition: "100% 0%",
-      duration: 2.4,
-      ease: "sine.inOut",
-      stagger: 0.08,
-      yoyo: true,
-      repeat: -1,
-      repeatDelay: 2.5,
-    });
-  }
-
-  function heroIdle(dashes) {
-    const loops = [
-      gsap.to(".float-inner--plate", { y: -10, rotation: -2, duration: 3.4, ease: "sine.inOut", yoyo: true, repeat: -1 }),
-      gsap.to(".float-inner--a", { y: -12, duration: 2.9, ease: "sine.inOut", yoyo: true, repeat: -1 }),
-      gsap.to(".float-inner--b", { y: 11, duration: 3.6, ease: "sine.inOut", yoyo: true, repeat: -1 }),
-      gsap.to(".stage-ticks", { rotation: 360, duration: 160, ease: "none", repeat: -1 }),
-      gsap.to(".sweep-lane", { strokeDashoffset: -84, duration: 2.6, ease: "none", repeat: -1 }),
-      // faixas da estrada "piscando" para frente, como faróis em movimento
-      gsap.timeline({ repeat: -1, repeatDelay: 1.4 })
-        .to(dashes, { opacity: 0.25, duration: 0.22, stagger: 0.11, ease: "power1.in" })
-        .to(dashes, { opacity: 1, duration: 0.45, stagger: 0.11, ease: "power1.out" }, 0.22),
-    ];
-    titleSheen();
-    playWhileVisible(".hero", () => loops.concat(sheenTween || []));
+    gsap.timeline({ defaults: { ease: "power3.out" } })
+      .fromTo(".header-inner", { y: -16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, 0)
+      .fromTo(items, { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.08 }, 0.3)
+      .fromTo(card, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, 0.25)
+      .fromTo(cardParts, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08 }, 0.55);
   }
 
   // Pausa animações contínuas quando a seção sai da tela (economiza CPU/bateria)
@@ -407,45 +331,6 @@
       onToggle: (self) => set(self.isActive),
     });
     set(st.isActive);
-  }
-
-  function heroScroll() {
-    const st = { trigger: ".hero", start: "top top", end: "bottom top", scrub: true };
-    gsap.to(".hero-visual", { yPercent: 14, ease: "none", scrollTrigger: st });
-    gsap.to(".hero-glow", { yPercent: 16, ease: "none", scrollTrigger: { ...st } });
-  }
-
-  function heroTilt() {
-    const hero = $(".hero");
-    const wrap = $(".hero-symbol-wrap");
-    if (!hero || !wrap) return null;
-    gsap.set(wrap, { transformPerspective: 900 });
-    const rx = gsap.quickTo(wrap, "rotationX", { duration: 1, ease: "power3" });
-    const ry = gsap.quickTo(wrap, "rotationY", { duration: 1, ease: "power3" });
-    const layers = $$(".float").map((el) => ({
-      x: gsap.quickTo(el, "x", { duration: 1.1, ease: "power3" }),
-      y: gsap.quickTo(el, "y", { duration: 1.1, ease: "power3" }),
-      depth: Number(el.dataset.depth) || 20,
-    }));
-
-    const move = (e) => {
-      const r = hero.getBoundingClientRect();
-      const nx = (e.clientX - r.left) / r.width - 0.5;
-      const ny = (e.clientY - r.top) / r.height - 0.5;
-      ry(nx * 18);
-      rx(-ny * 14);
-      layers.forEach((l) => { l.x(nx * l.depth); l.y(ny * l.depth); });
-    };
-    const leave = () => {
-      rx(0); ry(0);
-      layers.forEach((l) => { l.x(0); l.y(0); });
-    };
-    hero.addEventListener("pointermove", move);
-    hero.addEventListener("pointerleave", leave);
-    return () => {
-      hero.removeEventListener("pointermove", move);
-      hero.removeEventListener("pointerleave", leave);
-    };
   }
 
   function magneticButtons() {
@@ -467,35 +352,6 @@
       };
     });
     return () => offs.forEach((off) => off());
-  }
-
-  /* ======================================================================
-     Faixa de serviços: acelera e muda de sentido com a rolagem
-     ====================================================================== */
-  function marquee() {
-    const track = $(".marquee-track");
-    if (!track) return;
-    const loop = gsap.to(track, { xPercent: -50, duration: 46, ease: "none", repeat: -1 });
-    loop.totalTime(loop.duration() * 200); // permite rodar "para trás" sem chegar ao início
-
-    let dir = 1;
-    ScrollTrigger.create({
-      trigger: ".marquee",
-      start: "top bottom",
-      end: "bottom top",
-      onToggle: (self) => loop.paused(!self.isActive),
-      onUpdate(self) {
-        const v = self.getVelocity();
-        if (Math.abs(v) < 10) return;
-        dir = v < 0 ? -1 : 1;
-        gsap.to(loop, {
-          timeScale: dir * gsap.utils.clamp(1, 7, Math.abs(v) / 220),
-          duration: 0.25,
-          overwrite: true,
-          onComplete: () => gsap.to(loop, { timeScale: dir, duration: 1.4, ease: "power2.out", overwrite: true }),
-        });
-      },
-    });
   }
 
   /* ======================================================================
@@ -535,7 +391,7 @@
   }
 
   /* ======================================================================
-     Serviços: ícones se desenham, checklist do destaque
+     Serviços: ícones se desenham quando o card aparece
      ====================================================================== */
   function serviceCards() {
     $$(".svc-card").forEach((card) => {
@@ -544,32 +400,10 @@
       gsap.set(shapes, { drawSVG: "0%" });
       ScrollTrigger.create({
         trigger: card,
-        start: "top 85%",
-        once: true,
-        onEnter: () => gsap.to(shapes, { drawSVG: "100%", duration: 1.2, ease: "power2.inOut", stagger: 0.1, delay: 0.35 }),
-      });
-      if (finePointer) {
-        card.addEventListener("pointerenter", () => {
-          gsap.fromTo(shapes, { drawSVG: "0%" }, { drawSVG: "100%", duration: 0.9, ease: "power2.inOut", stagger: 0.07, overwrite: true });
-        });
-      }
-    });
-
-    const checks = $$(".feat-list .check path");
-    if (checks.length) {
-      gsap.set(checks, { drawSVG: "0%" });
-      ScrollTrigger.create({
-        trigger: ".feat-list",
         start: "top 88%",
         once: true,
-        onEnter: () => gsap.to(checks, { drawSVG: "100%", duration: 0.6, ease: "power2.out", stagger: 0.28, delay: 0.45 }),
+        onEnter: () => gsap.to(shapes, { drawSVG: "100%", duration: 1, ease: "power2.inOut", stagger: 0.08, delay: 0.25 }),
       });
-    }
-
-    gsap.fromTo(".feat-deco", { yPercent: 12 }, {
-      yPercent: -8,
-      ease: "none",
-      scrollTrigger: { trigger: ".svc-card--featured", start: "top bottom", end: "bottom top", scrub: true },
     });
   }
 
