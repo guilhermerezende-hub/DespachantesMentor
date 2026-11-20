@@ -655,8 +655,8 @@
       [0.63, 0.8].forEach((k, i) => {
         const p = at(t, k);
         [cores[i], glows[i]].forEach((el) => { el.setAttribute("cx", fmt(p[0])); el.setAttribute("cy", fmt(p[1])); });
-        cores[i].setAttribute("r", fmt(w * 0.022));
-        glows[i].setAttribute("r", fmt(w * 0.11));
+        cores[i].setAttribute("r", fmt(w * 0.03));
+        glows[i].setAttribute("r", fmt(w * 0.16));
       });
       const tp = depth(car.d - 0.08);
       const c = at(tp, 0.71);
@@ -665,8 +665,8 @@
       const angle = (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI;
       pool.setAttribute("cx", fmt(c[0]));
       pool.setAttribute("cy", fmt(c[1]));
-      pool.setAttribute("rx", fmt(roadWidth(tp) * 0.24));
-      pool.setAttribute("ry", fmt(roadWidth(tp) * 0.1));
+      pool.setAttribute("rx", fmt(roadWidth(tp) * 0.3));
+      pool.setAttribute("ry", fmt(roadWidth(tp) * 0.13));
       pool.setAttribute("transform", `rotate(${fmt(angle)} ${fmt(c[0])} ${fmt(c[1])})`);
       lights.setAttribute("opacity", fmt(smooth(1.1, 0.85, car.d)));
     };
