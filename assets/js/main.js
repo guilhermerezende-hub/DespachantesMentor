@@ -79,6 +79,7 @@
 
   fontsReady.then(() => {
     initRoute(canAnimate);
+    ctaScene(canAnimate);
 
     if (canAnimate) {
       heroIntro();
@@ -86,7 +87,6 @@
       serviceCards();
       pillars();
       counters();
-      ctaSection();
       footerMark();
 
       const mm = gsap.matchMedia();
@@ -292,7 +292,7 @@
     const title = $(".hero-title");
     const items = $$("[data-hero-item]");
     const card = $(".hero-card");
-    const cardParts = card ? $$(".hero-option, .hero-card-contact", card) : [];
+    const cardParts = card ? $$(".hero-card-head, .hero-option, .hero-card-phone", card) : [];
 
     let first = true;
     SplitText.create(title, {
@@ -319,18 +319,6 @@
       .fromTo(items, { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.08 }, 0.3)
       .fromTo(card, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9 }, 0.25)
       .fromTo(cardParts, { y: 10, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, stagger: 0.08 }, 0.55);
-  }
-
-  // Pausa animações contínuas quando a seção sai da tela (economiza CPU/bateria)
-  function playWhileVisible(trigger, getAnims) {
-    const set = (active) => getAnims().forEach((a) => a.paused(!active));
-    const st = ScrollTrigger.create({
-      trigger,
-      start: "top bottom",
-      end: "bottom top",
-      onToggle: (self) => set(self.isActive),
-    });
-    set(st.isActive);
   }
 
   function magneticButtons() {
@@ -571,27 +559,165 @@
   }
 
   /* ======================================================================
-     Chamada final: símbolo gigante desenhado pela rolagem
+     Chamada final: o M da logo com volume e a estrada da logo em versão
+     realista — perspectiva, faixas, marcas de pneu e faróis de um carro
      ====================================================================== */
-  function ctaSection() {
-    gsap.fromTo(".cta-line", { drawSVG: "0%" }, {
-      drawSVG: "100%",
-      ease: "none",
-      stagger: 0.1,
-      scrollTrigger: { trigger: ".cta", start: "top 80%", end: "center 45%", scrub: 0.8 },
+  function ctaScene(animated) {
+    const svg = $(".cta-road");
+    if (!svg) return;
+    const NS = "http://www.w3.org/2000/svg";
+    const make = (parent, tag, attrs = {}) => {
+      const el = document.createElementNS(NS, tag);
+      Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+      parent.appendChild(el);
+      return el;
+    };
+    const fmt = (n) => n.toFixed(2);
+    const smooth = (a, b, x) => {
+      const k = Math.min(1, Math.max(0, (x - a) / (b - a)));
+      return k * k * (3 - 2 * k);
+    };
+
+    // Bordas da estrada da logo (Bézier cúbicas), do primeiro plano (t = 0) ao horizonte (t = 1)
+    const bez = (a, b, c, d, t) => {
+      const u = 1 - t;
+      return [
+        u * u * u * a[0] + 3 * u * u * t * b[0] + 3 * u * t * t * c[0] + t * t * t * d[0],
+        u * u * u * a[1] + 3 * u * u * t * b[1] + 3 * u * t * t * c[1] + t * t * t * d[1],
+      ];
+    };
+    const edgeL = (t) => bez([912.823, 259.6], [925.611, 231.746], [944.484, 219.151], [979.8, 207], t);
+    const edgeR = (t) => bez([975.084, 259.6], [952.946, 243.585], [950.882, 225.4], [979.8, 207], t);
+    // ponto a uma fração k da largura da pista (0 = borda esquerda, 1 = direita)
+    const at = (t, k) => {
+      const a = edgeL(t), b = edgeR(t);
+      return [a[0] + (b[0] - a[0]) * k, a[1] + (b[1] - a[1]) * k];
+    };
+    const roadWidth = (t) => {
+      const a = edgeL(t), b = edgeR(t);
+      return Math.hypot(b[0] - a[0], b[1] - a[1]);
+    };
+    // perspectiva: distância real d (0 = perto, 1 = horizonte) → posição t na curva
+    const depth = (d) => (1 - 1 / (1 + 3 * d)) / 0.75;
+    const laneAt = (t) => 0.28 + 0.22 * t; // faixa central na mesma posição da logo
+
+    // Faixas contínuas que afinam com a distância (laterais, sombras das bordas e marcas de pneu)
+    const strip = (k1, k2) => {
+      const a = [];
+      const b = [];
+      for (let i = 0; i <= 64; i++) {
+        const t = i / 64;
+        a.push(at(t, k1));
+        b.push(at(t, k2));
+      }
+      return "M" + a.concat(b.reverse()).map((p) => `${fmt(p[0])},${fmt(p[1])}`).join("L") + "Z";
+    };
+    const tracks = $(".cr-tracks", svg);
+    const edges = $(".cr-edges", svg);
+    const fogs = $(".cr-fogs", svg);
+    [[0.1, 0.17], [0.56, 0.63], [0.78, 0.85]].forEach(([a, b]) => make(tracks, "path", { d: strip(a, b) }));
+    [[0, 0.025], [0.975, 1]].forEach(([a, b]) => make(edges, "path", { d: strip(a, b) }));
+    [[0.04, 0.07], [0.93, 0.96]].forEach(([a, b]) => make(fogs, "path", { d: strip(a, b) }));
+
+    // Faixa tracejada com perspectiva (substitui os traços fixos da versão sem JS)
+    const dashLayer = $(".cr-dashes", svg);
+    const fixed = $(".cr-static", svg);
+    if (fixed) fixed.remove();
+    const COUNT = 16;
+    const HALF = 0.55 / COUNT / 2;
+    const dashes = Array.from({ length: COUNT }, () => make(dashLayer, "line", { "stroke-linecap": "butt" }));
+    const drawDashes = (phase) => {
+      dashes.forEach((el, i) => {
+        const d = ((((i - phase) / COUNT) % 1) + 1) % 1;
+        const t1 = depth(d - HALF);
+        const t2 = depth(Math.min(1, d + HALF));
+        const p1 = at(t1, laneAt(t1));
+        const p2 = at(t2, laneAt(t2));
+        el.setAttribute("x1", fmt(p1[0]));
+        el.setAttribute("y1", fmt(p1[1]));
+        el.setAttribute("x2", fmt(p2[0]));
+        el.setAttribute("y2", fmt(p2[1]));
+        el.setAttribute("stroke-width", fmt(roadWidth(depth(d)) * 0.045));
+        el.setAttribute("opacity", fmt(1 - smooth(0.72, 1, d)));
+      });
+    };
+    drawDashes(0.35);
+
+    // Faróis de um carro que vem do horizonte, iluminando o asfalto à frente
+    const lights = $(".cr-lights", svg);
+    const pool = make(lights, "ellipse", { fill: "url(#crPool)" });
+    const glows = [0, 1].map(() => make(lights, "circle", { fill: "url(#crGlow)" }));
+    const cores = [0, 1].map(() => make(lights, "circle", { fill: "#FFFFFF" }));
+    const car = { d: 1.1 };
+    const drawCar = () => {
+      const t = depth(car.d);
+      const w = roadWidth(t);
+      [0.63, 0.8].forEach((k, i) => {
+        const p = at(t, k);
+        [cores[i], glows[i]].forEach((el) => { el.setAttribute("cx", fmt(p[0])); el.setAttribute("cy", fmt(p[1])); });
+        cores[i].setAttribute("r", fmt(w * 0.022));
+        glows[i].setAttribute("r", fmt(w * 0.11));
+      });
+      const tp = depth(car.d - 0.08);
+      const c = at(tp, 0.71);
+      const a = edgeL(tp);
+      const b = edgeR(tp);
+      const angle = (Math.atan2(b[1] - a[1], b[0] - a[0]) * 180) / Math.PI;
+      pool.setAttribute("cx", fmt(c[0]));
+      pool.setAttribute("cy", fmt(c[1]));
+      pool.setAttribute("rx", fmt(roadWidth(tp) * 0.24));
+      pool.setAttribute("ry", fmt(roadWidth(tp) * 0.1));
+      pool.setAttribute("transform", `rotate(${fmt(angle)} ${fmt(c[0])} ${fmt(c[1])})`);
+      lights.setAttribute("opacity", fmt(smooth(1.1, 0.85, car.d)));
+    };
+    drawCar();
+
+    if (!animated) return; // movimento reduzido: cena estática, sem faróis
+
+    const mark = $(".cr-m", svg);
+    const road = $(".cr-road", svg);
+    const pave = $(".cr-pave", svg);
+    const sheen = $(".cr-m-sheen", svg);
+
+    gsap.set(mark, { opacity: 0, y: 10 });
+    gsap.set(pave, { drawSVG: "0%" });
+    gsap.set([tracks, fogs, dashLayer], { opacity: 0 });
+
+    const state = { phase: 0.35 };
+    const loops = [
+      gsap.to(state, { phase: 1.35, duration: 0.6, ease: "none", repeat: -1, paused: true, onUpdate: () => drawDashes(state.phase) }),
+      gsap.timeline({ repeat: -1, repeatDelay: 2.4, paused: true })
+        .fromTo(car, { d: 1.1 }, { d: -0.3, duration: 4.8, ease: "none", onUpdate: drawCar }),
+      gsap.fromTo(sheen, { x: 0 }, { x: 175, duration: 2.4, ease: "power2.inOut", repeat: -1, repeatDelay: 4.5, paused: true }),
+    ];
+
+    // Loops só rodam com a seção na tela (economiza CPU/bateria)
+    let started = false;
+    let visible = false;
+    const sync = () => loops.forEach((l) => (started && visible ? l.play() : l.pause()));
+    const viewport = ScrollTrigger.create({
+      trigger: ".cta",
+      start: "top bottom",
+      end: "bottom top",
+      onToggle: (self) => { visible = self.isActive; sync(); },
     });
-    gsap.fromTo(".cta-fill", { opacity: 0 }, {
-      opacity: 1,
-      ease: "none",
-      scrollTrigger: { trigger: ".cta", start: "top 45%", end: "center 30%", scrub: true },
-    });
-    gsap.fromTo(".cta-symbol", { yPercent: 10 }, {
-      yPercent: -6,
+    visible = viewport.isActive;
+
+    // Entrada: o M surge e a estrada é pavimentada do primeiro plano até o horizonte
+    gsap.timeline({ scrollTrigger: { trigger: ".cta", start: "top 70%", once: true } })
+      .set(road, { opacity: 1 })
+      .to(mark, { opacity: 1, y: 0, duration: 1.2, ease: "power3.out" }, 0)
+      .to(pave, { drawSVG: "100%", duration: 1.6, ease: "power2.inOut" }, 0.2)
+      .to([tracks, fogs], { opacity: 1, duration: 0.8 }, 1.1)
+      .to(dashLayer, { opacity: 1, duration: 0.6 }, 1.3)
+      .add(() => { started = true; sync(); }, 1.4);
+
+    // Leve profundidade na rolagem (o corte reto da estrada da logo fica sempre abaixo da seção)
+    gsap.fromTo(".cta-symbol", { yPercent: 6 }, {
+      yPercent: 0,
       ease: "none",
       scrollTrigger: { trigger: ".cta", start: "top bottom", end: "bottom top", scrub: true },
     });
-    const lane = gsap.to(".cta-lane", { strokeDashoffset: -44, duration: 1.6, ease: "none", repeat: -1 });
-    playWhileVisible(".cta", () => [lane]);
   }
 
   /* ======================================================================
