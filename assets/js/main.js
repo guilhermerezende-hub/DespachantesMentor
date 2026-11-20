@@ -384,13 +384,18 @@
   function serviceCards() {
     $$(".svc-card").forEach((card) => {
       const shapes = $$(".svc-icon > *", card);
-      if (!shapes.length) return;
-      gsap.set(shapes, { drawSVG: "0%" });
+      const photo = $(".svc-media img", card);
+      if (shapes.length) gsap.set(shapes, { drawSVG: "0%" });
+      if (photo) gsap.set(photo, { scale: 1.16, opacity: 0 });
       ScrollTrigger.create({
         trigger: card,
         start: "top 88%",
         once: true,
-        onEnter: () => gsap.to(shapes, { drawSVG: "100%", duration: 1, ease: "power2.inOut", stagger: 0.08, delay: 0.25 }),
+        onEnter: () => {
+          // a foto "assenta" no fundo enquanto o ícone se desenha
+          if (photo) gsap.to(photo, { scale: 1, opacity: 1, duration: 1.6, ease: "power3.out", delay: 0.1 });
+          if (shapes.length) gsap.to(shapes, { drawSVG: "100%", duration: 1, ease: "power2.inOut", stagger: 0.08, delay: 0.25 });
+        },
       });
     });
   }
