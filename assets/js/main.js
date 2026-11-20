@@ -104,19 +104,24 @@
      Cabeçalho: fundo ao rolar, esconde ao descer, link ativo
      ====================================================================== */
   function headerBehavior() {
-    header.classList.toggle("is-scrolled", window.scrollY > 24);
-
-    ScrollTrigger.create({
-      start: 0,
-      end: "max",
-      onUpdate(self) {
-        const y = self.scroll();
-        header.classList.toggle("is-scrolled", y > 24);
-        if (menuOpen) return;
-        if (self.direction === 1 && y > 520) header.classList.add("is-hidden");
-        else if (self.direction === -1) header.classList.remove("is-hidden");
-      },
-    });
+    // Listener nativo (e não ScrollTrigger.onUpdate): durante um refresh() o
+    // ScrollTrigger pode reportar posições temporárias e "apagar" o fundo do cabeçalho.
+    let lastY = window.scrollY;
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const y = window.scrollY;
+      header.classList.toggle("is-scrolled", y > 24);
+      if (!menuOpen) {
+        if (y > lastY + 4 && y > 520) header.classList.add("is-hidden");
+        else if (y < lastY - 4 || y <= 520) header.classList.remove("is-hidden");
+      }
+      lastY = y;
+    };
+    window.addEventListener("scroll", () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
 
     header.addEventListener("focusin", () => header.classList.remove("is-hidden"));
 
@@ -137,6 +142,9 @@
      ====================================================================== */
   function mobileMenu() {
     const items = $$(".mm-link, .mm-cta", menu);
+    // conteúdo atrás do menu fica inacessível (teclado e leitores de tela) enquanto ele está aberto
+    const background = [$("main"), $(".site-footer"), $(".wa-float")].filter(Boolean);
+    const setInert = (on) => background.forEach((el) => { el.inert = on; });
 
     const build = () => gsap.timeline({ paused: true })
       .fromTo(menu,
@@ -163,6 +171,7 @@
       header.classList.remove("is-hidden");
       header.classList.add("menu-is-open");
       document.body.classList.add("no-scroll");
+      setInert(true);
       if (canAnimate) {
         menuTl = menuTl || build();
         menuTl.timeScale(1).play(0);
@@ -176,6 +185,7 @@
       toggle.setAttribute("aria-label", "Abrir menu");
       header.classList.remove("menu-is-open");
       document.body.classList.remove("no-scroll");
+      setInert(false);
       const done = () => { if (!menuOpen) menu.hidden = true; };
       if (canAnimate && menuTl && !immediate) {
         menuTl.eventCallback("onReverseComplete", done);
@@ -337,6 +347,7 @@
       .to(dashes, { opacity: 1, duration: 0.3, stagger: 0.1, ease: "none" }, 1.45)
       .fromTo(items, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 1, stagger: 0.1 }, 0.55)
       .fromTo(floats, { y: 34, scale: 0.82, opacity: 0 }, { y: 0, scale: 1, opacity: 1, duration: 1, stagger: 0.14, ease: "back.out(1.6)" }, 1.5)
+      .fromTo(".marquee", { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.1, ease: "expo.out" }, 1.1)
       .add(scramblePlate, 1.6)
       .add(() => { idleStarted = true; heroIdle(dashes); });
 
@@ -371,18 +382,31 @@
   }
 
   function heroIdle(dashes) {
-    gsap.to(".float-inner--plate", { y: -10, rotation: -2, duration: 3.4, ease: "sine.inOut", yoyo: true, repeat: -1 });
-    gsap.to(".float-inner--a", { y: -12, duration: 2.9, ease: "sine.inOut", yoyo: true, repeat: -1 });
-    gsap.to(".float-inner--b", { y: 11, duration: 3.6, ease: "sine.inOut", yoyo: true, repeat: -1 });
-    gsap.to(".stage-ticks", { rotation: 360, duration: 160, ease: "none", repeat: -1 });
-    gsap.to(".sweep-lane", { strokeDashoffset: -84, duration: 2.6, ease: "none", repeat: -1 });
-
-    // faixas da estrada "piscando" para frente, como faróis em movimento
-    gsap.timeline({ repeat: -1, repeatDelay: 1.4 })
-      .to(dashes, { opacity: 0.25, duration: 0.22, stagger: 0.11, ease: "power1.in" })
-      .to(dashes, { opacity: 1, duration: 0.45, stagger: 0.11, ease: "power1.out" }, 0.22);
-
+    const loops = [
+      gsap.to(".float-inner--plate", { y: -10, rotation: -2, duration: 3.4, ease: "sine.inOut", yoyo: true, repeat: -1 }),
+      gsap.to(".float-inner--a", { y: -12, duration: 2.9, ease: "sine.inOut", yoyo: true, repeat: -1 }),
+      gsap.to(".float-inner--b", { y: 11, duration: 3.6, ease: "sine.inOut", yoyo: true, repeat: -1 }),
+      gsap.to(".stage-ticks", { rotation: 360, duration: 160, ease: "none", repeat: -1 }),
+      gsap.to(".sweep-lane", { strokeDashoffset: -84, duration: 2.6, ease: "none", repeat: -1 }),
+      // faixas da estrada "piscando" para frente, como faróis em movimento
+      gsap.timeline({ repeat: -1, repeatDelay: 1.4 })
+        .to(dashes, { opacity: 0.25, duration: 0.22, stagger: 0.11, ease: "power1.in" })
+        .to(dashes, { opacity: 1, duration: 0.45, stagger: 0.11, ease: "power1.out" }, 0.22),
+    ];
     titleSheen();
+    playWhileVisible(".hero", () => loops.concat(sheenTween || []));
+  }
+
+  // Pausa animações contínuas quando a seção sai da tela (economiza CPU/bateria)
+  function playWhileVisible(trigger, getAnims) {
+    const set = (active) => getAnims().forEach((a) => a.paused(!active));
+    const st = ScrollTrigger.create({
+      trigger,
+      start: "top bottom",
+      end: "bottom top",
+      onToggle: (self) => set(self.isActive),
+    });
+    set(st.isActive);
   }
 
   function heroScroll() {
@@ -687,11 +711,13 @@
      ====================================================================== */
   function pillars() {
     $$(".pillar").forEach((pillar) => {
-      gsap.fromTo($(".pillar-fill", pillar), { clipPath: "inset(0% 100% 0% 0%)" }, {
-        clipPath: "inset(0% 0% 0% 0%)",
-        ease: "none",
+      gsap.timeline({
+        defaults: { ease: "none" },
         scrollTrigger: { trigger: pillar, start: "top 85%", end: "top 40%", scrub: 0.6 },
-      });
+      })
+        .fromTo($(".pillar-fill", pillar), { clipPath: "inset(-25% 100% -35% 0%)" }, { clipPath: "inset(-25% 0% -35% 0%)", duration: 1 }, 0)
+        // o contorno some quando a palavra termina de ser preenchida
+        .to($(".pillar-outline", pillar), { opacity: 0, duration: 0.25 }, 0.75);
     });
   }
 
@@ -730,7 +756,8 @@
       ease: "none",
       scrollTrigger: { trigger: ".cta", start: "top bottom", end: "bottom top", scrub: true },
     });
-    gsap.to(".cta-lane", { strokeDashoffset: -44, duration: 1.6, ease: "none", repeat: -1 });
+    const lane = gsap.to(".cta-lane", { strokeDashoffset: -44, duration: 1.6, ease: "none", repeat: -1 });
+    playWhileVisible(".cta", () => [lane]);
   }
 
   /* ======================================================================
@@ -750,7 +777,8 @@
         gsap.timeline()
           .to(letters, { drawSVG: "100%", duration: 1.6, ease: "power2.inOut", stagger: 0.12 })
           .to(letters, { fillOpacity: 1, duration: 1.2, stagger: 0.12 }, 0.7)
-          .to(rules, { scaleX: 1, duration: 1.2, ease: "power3.out" }, 0.3);
+          .to(rules, { scaleX: 1, duration: 1.2, ease: "power3.out" }, 0.3)
+          .to(letters, { strokeOpacity: 0.35, duration: 1.2 }, 1.9);
       },
     });
   }

@@ -73,6 +73,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 [tabindex="-1"]:focus { outline: none; }
 
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.nowrap { white-space: nowrap; }
+p { text-wrap: pretty; }
 
 .sr-only {
   position: absolute !important;
@@ -245,7 +247,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: rgba(11, 21, 36, .74);
+  background: rgba(11, 21, 36, .86);
   -webkit-backdrop-filter: blur(16px) saturate(140%);
   backdrop-filter: blur(16px) saturate(140%);
   opacity: 0;
@@ -350,7 +352,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   line-height: 1.1;
   color: var(--gelo);
 }
-.mm-num { font-size: .8rem; letter-spacing: .18em; color: var(--nevoa); }
+.mm-num { min-width: 2.2rem; font-size: .8rem; letter-spacing: .18em; color: var(--nevoa); }
 .mm-footer { display: grid; gap: 1.25rem; }
 .mm-tagline {
   text-align: center;
@@ -528,7 +530,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .hero-symbol { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 28px 34px rgba(0, 0, 0, .5)); }
 
 .float { position: absolute; z-index: 2; }
-.float--plate { left: -4%; bottom: 7%; }
+.float--plate { left: -9%; bottom: 2%; }
 .float--chip-a { right: -3%; top: 4%; }
 .float--chip-b { right: -2%; bottom: 0; }
 
@@ -570,10 +572,10 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   border-top: 0;
   border-radius: 0 0 .5em .5em;
   font-family: var(--font-display);
-  font-size: 3.1em;
+  font-size: 2.8em;
   font-weight: 700;
   line-height: 1.12;
-  letter-spacing: .06em;
+  letter-spacing: .05em;
   text-align: center;
   white-space: nowrap;
   color: #1C1D20;
@@ -1012,7 +1014,8 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  clip-path: inset(0 0 0 0);
+  /* margens negativas: não cortar a cedilha do Ç */
+  clip-path: inset(-25% 0% -35% 0%);
 }
 .pillar-text { color: var(--asfalto); }
 
@@ -1228,8 +1231,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .anim .stage-ring,
 .anim .stage-ticks,
 .anim .float-inner,
+.anim .marquee,
 .anim .step-card { opacity: 0; }
-.anim .pillar-fill { clip-path: inset(0 100% 0 0); }
+.anim .pillar-fill { clip-path: inset(-25% 100% -35% 0%); }
 .anim .wa-float:not(.is-visible) { opacity: 0; visibility: hidden; translate: 0 16px; scale: .8; }
 
 /* ==========================================================================
@@ -1275,9 +1279,13 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 }
 
 @media (max-width: 639.98px) {
+  .eyebrow { gap: .6rem; font-size: .72rem; letter-spacing: .14em; }
+  .eyebrow::before { width: 22px; }
   .hero-actions .btn { flex: 1 1 100%; }
-  .hero-trust { gap: 1rem 1.25rem; }
-  .hero-trust li { flex: 1 1 100%; }
+  .hero-trust { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin-top: 2.25rem; padding-top: 1.5rem; }
+  .hero-trust li { flex-direction: column; align-items: flex-start; gap: .6rem; font-size: .78rem; }
+  .hero-trust strong { font-size: .9rem; }
+  .trust-ico { width: 36px; height: 36px; border-radius: 10px; }
   .hero-stage { width: min(100%, 380px); }
   .float--plate { left: -1%; bottom: 4%; }
   .chip { gap: .55rem; padding: .5rem .75rem .5rem .5rem; border-radius: 13px; }
