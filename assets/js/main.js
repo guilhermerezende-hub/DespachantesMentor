@@ -379,7 +379,7 @@
   }
 
   /* ======================================================================
-     Serviços: ícones se desenham quando o card aparece
+     Serviços: a foto assenta no fundo e o ícone se desenha quando o card aparece
      ====================================================================== */
   function serviceCards() {
     $$(".svc-card").forEach((card) => {
